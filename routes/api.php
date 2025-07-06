@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\SitesettingController;
 use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProfileCompletionController;
+use App\Http\Controllers\Api\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,4 +91,23 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::delete('/delete', 'deleteUser');
     });
 
+    // Profile Completion Routes
+    Route::controller(ProfileCompletionController::class)->prefix('profile')->group(function () {
+        Route::post('/basic', 'completeBasicProfile');
+        Route::post('/real-estate', 'completeRealEstatePreferences');
+        Route::post('/personal-questions', 'completePersonalQuestions');
+        Route::get('/status', 'getProfileStatus');
+        Route::post('/tags', 'updateTags');
+    });
+
+    // Favorite Routes
+    Route::controller(FavoriteController::class)->prefix('favorites')->group(function () {
+        Route::post('/add', 'addToFavorites');
+        Route::post('/remove', 'removeFromFavorites');
+        Route::get('/my-favorites', 'getMyFavorites');
+        Route::get('/favorited-by-me', 'getFavoritedByMe');
+        Route::post('/check', 'checkIfFavorited');
+        Route::get('/count', 'getFavoriteCount');
+        Route::delete('/clear-all', 'clearAllFavorites');
+    });
 });

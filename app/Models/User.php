@@ -110,4 +110,36 @@ class User extends Authenticatable implements JWTSubject
                !empty($this->budget_max) &&
                !empty($this->preferred_location);
     }
+
+    /**
+     * Get favorites created by this user
+     */
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class, 'user_id');
+    }
+
+    /**
+     * Get users who favorited this user
+     */
+    public function favoritedBy()
+    {
+        return $this->hasMany(Favorite::class, 'favorite_user_id');
+    }
+
+    /**
+     * Check if this user has favorited another user
+     */
+    public function hasFavorited($userId)
+    {
+        return $this->favorites()->where('favorite_user_id', $userId)->exists();
+    }
+
+    /**
+     * Check if this user is favorited by another user
+     */
+    public function isFavoritedBy($userId)
+    {
+        return $this->favoritedBy()->where('user_id', $userId)->exists();
+    }
 }
