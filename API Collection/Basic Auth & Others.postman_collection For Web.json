@@ -1,0 +1,761 @@
+{
+	"info": {
+		"_postman_id": "0b0ea267-c71f-4d25-8a11-3367d2ee9f2d",
+		"name": "Basic Auth & Others",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39612169"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Registation",
+					"item": [
+						{
+							"name": "Register",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "NA",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "reshikash3@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "12345678",
+											"type": "text"
+										},
+										{
+											"key": "agree_to_terms",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/users/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify OTP",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "reshikash3@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "otp",
+											"value": "1993",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/users/register/otp-verify",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"register",
+										"otp-verify"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "OTP Resend",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "reshikash3@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/users/register/otp-resend",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"register",
+										"otp-resend"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Login",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "manx734@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "1234567890",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "admin@admin.com",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "email",
+											"value": "premium@premium.com",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/users/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify Email",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "manx734@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/users/login/email-verify",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"login",
+										"email-verify"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "OTP Resend",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "manx734@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/users/login/otp-resend",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"login",
+										"otp-resend"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Verify OTP",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "manx734@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "otp",
+											"value": "6972",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/users/login/otp-verify",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"login",
+										"otp-verify"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reset Password",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "manx734@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "1234567890",
+											"type": "text"
+										},
+										{
+											"key": "password_confirmation",
+											"value": "1234567890",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/users/login/reset-password",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"login",
+										"reset-password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Social Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "token",
+									"value": "adf",
+									"type": "text"
+								},
+								{
+									"key": "provider",
+									"value": "google",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "adf",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "reshikash3@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/social-login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"social-login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/data",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/reshi/Downloads/1Untitled.jpg"
+								},
+								{
+									"key": "name",
+									"value": "NA!",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/users/data/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"data",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/logout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearer_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/delete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Password Change",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "current_password",
+									"value": "12345678",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "1234567890",
+									"type": "text"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "1234567890",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/users/password/change",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"password",
+								"change"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Site Settings",
+			"item": [
+				{
+					"name": "Site Setting",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/site-settings",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"site-settings"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dynamic Page",
+			"item": [
+				{
+					"name": "Get All Dynamic Page",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/dynamic-pages",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dynamic-pages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single Page",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/dynamic-pages/single/privacy-and-policy",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dynamic-pages",
+								"single",
+								"privacy-and-policy"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Social Links",
+			"item": [
+				{
+					"name": "Social Links",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/social-links",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"social-links"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "FAQ",
+			"item": [
+				{
+					"name": "Get All FAQ",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/faq/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"faq",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://laravel-stater-kit-craft.test/api",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL3VzZXJzL3JlZ2lzdGVyL290cC12ZXJpZnkiLCJpYXQiOjE3MzU1NTIxMzcsImV4cCI6MTc2NzA4ODEzNywibmJmIjoxNzM1NTUyMTM3LCJqdGkiOiJGbzFJc1MyYzBoQlV0ajgxIiwic3ViIjoiNCIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.R96pTljRoWyUnV2TWFsvpKe8zwdlpkB1wXMFw1nshmw",
+			"type": "string"
+		}
+	]
+}
