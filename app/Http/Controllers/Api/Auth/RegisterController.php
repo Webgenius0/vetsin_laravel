@@ -113,10 +113,7 @@ class RegisterController extends Controller {
 
             $user->save();
 
-            // Generate a JWT token for the user
-            $token = JWTAuth::fromUser($user);
-            // Add the token to the user object
-            $user->setAttribute('token', $token);
+            $this->sendOtp($user);
 
             return $this->success($user, 'User registered successfully', 201);
         } catch (\Exception $e) {
