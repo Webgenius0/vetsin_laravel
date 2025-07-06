@@ -91,15 +91,6 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::delete('/delete', 'deleteUser');
     });
 
-    // Profile Completion Routes
-    Route::controller(ProfileCompletionController::class)->prefix('profile')->group(function () {
-        Route::post('/basic', 'completeBasicProfile');
-        Route::post('/real-estate', 'completeRealEstatePreferences');
-        Route::post('/personal-questions', 'completePersonalQuestions');
-        Route::get('/status', 'getProfileStatus');
-        Route::post('/tags', 'updateTags');
-    });
-
     // Favorite Routes
     Route::controller(FavoriteController::class)->prefix('favorites')->group(function () {
         Route::post('/add', 'addToFavorites');
