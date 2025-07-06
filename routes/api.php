@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\SitesettingController;
 use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProfileCompletionController;
+use App\Http\Controllers\Api\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,8 @@ Route::controller(RegisterController::class)->prefix('users/register')->group(fu
 
     // Resend OTP
     Route::post('/otp-resend', 'otpResend');
+    //email exists check
+    Route::post('/email-exists', 'emailExists');
 });
 
 //Login API
@@ -95,5 +98,16 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::post('/personal-questions', 'completePersonalQuestions');
         Route::get('/status', 'getProfileStatus');
         Route::post('/tags', 'updateTags');
+    });
+
+    // Favorite Routes
+    Route::controller(FavoriteController::class)->prefix('favorites')->group(function () {
+        Route::post('/add', 'addToFavorites');
+        Route::post('/remove', 'removeFromFavorites');
+        Route::get('/my-favorites', 'getMyFavorites');
+        Route::get('/favorited-by-me', 'getFavoritedByMe');
+        Route::post('/check', 'checkIfFavorited');
+        Route::get('/count', 'getFavoriteCount');
+        Route::delete('/clear-all', 'clearAllFavorites');
     });
 });
