@@ -37,6 +37,8 @@ Route::controller(RegisterController::class)->prefix('users/register')->group(fu
 
     // Resend OTP
     Route::post('/otp-resend', 'otpResend');
+    //email exists check
+    Route::post('/email-exists', 'emailExists');
 });
 
 //Login API
@@ -88,12 +90,4 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::delete('/delete', 'deleteUser');
     });
 
-    // Profile Completion Routes
-    Route::controller(ProfileCompletionController::class)->prefix('profile')->group(function () {
-        Route::post('/basic', 'completeBasicProfile');
-        Route::post('/real-estate', 'completeRealEstatePreferences');
-        Route::post('/personal-questions', 'completePersonalQuestions');
-        Route::get('/status', 'getProfileStatus');
-        Route::post('/tags', 'updateTags');
-    });
 });
