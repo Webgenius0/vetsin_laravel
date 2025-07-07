@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\LoginController;
-use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SocialAuthController;
 use App\Http\Controllers\Api\Auth\RegisterController;
@@ -10,7 +9,6 @@ use App\Http\Controllers\Api\FaqController;
 use App\Http\Controllers\Api\SitesettingController;
 use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ProfileCompletionController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\ProfileController;
 
@@ -107,5 +105,6 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     Route::controller(ProfileController::class)->prefix('profiles')->group(function () {
         Route::get('/random', 'getRandomProfiles');
         Route::get('/matching', 'getMatchingProfiles');
+        Route::get('/details/{id}', 'getProfileDetails');
     });
 });

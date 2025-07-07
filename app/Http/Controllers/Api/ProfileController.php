@@ -162,8 +162,6 @@ class ProfileController extends Controller
         }
     }
 
-
-
     /**
      * Calculate match score between two users
      *
@@ -216,5 +214,50 @@ class ProfileController extends Controller
         }
 
         return $score;
+    }
+
+    /**
+     * Get a single profile's details by user id
+     *
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getProfileDetails(Request $request, $id)
+    {
+        try {
+            $user = auth()->user();
+            $profile = User::findOrFail($id);
+
+            $data = [
+                'id' => $profile->id,
+                'name' => $profile->name,
+                'avatar' => $profile->avatar,
+                'location' => $profile->location,
+                'identity' => $profile->identity,
+                'age' => $profile->age,
+                'about_me' => $profile->about_me,
+                'relationship_goal' => $profile->relationship_goal,
+                'date_of_birth' => $profile->date_of_birth,
+                'preferred_age_min' => $profile->preferred_age_min,
+                'preferred_age_max' => $profile->preferred_age_max,
+                'preferred_property_type' => $profile->preferred_property_type,
+                'budget_min' => $profile->budget_min,
+                'budget_max' => $profile->budget_max,
+                'preferred_location' => $profile->preferred_location,
+                'perfect_weekend' => $profile->perfect_weekend,
+                'cant_live_without' => $profile->cant_live_without,
+                'quirky_fact' => $profile->quirky_fact,
+                'tags' => $profile->tags,
+                'is_profile_complete' => $profile->is_profile_complete,
+                'is_real_estate_complete' => $profile->is_real_estate_complete,
+                'is_favorite' => $user ? $user->hasFavorited($profile->id) : false,
+                'is_favorited_by' => $user ? $profile->hasFavorited($user->id) : false,
+            ];
+
+            return $this->success($data, 'Profile details retrieved successfully', 200);
+        } catch (\Exception $e) {
+            return $this->error([], $e->getMessage(), 404);
+        }
     }
 }
