@@ -92,8 +92,8 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getIsProfileCompleteAttribute()
     {
-        return !empty($this->date_of_birth) && 
-               !empty($this->location) && 
+        return !empty($this->date_of_birth) &&
+               !empty($this->location) &&
                !empty($this->relationship_goal) &&
                !empty($this->preferred_age_min) &&
                !empty($this->preferred_age_max);
@@ -104,8 +104,8 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getIsRealEstateCompleteAttribute()
     {
-        return !empty($this->preferred_property_type) && 
-               !empty($this->identity) && 
+        return !empty($this->preferred_property_type) &&
+               !empty($this->identity) &&
                !empty($this->budget_min) &&
                !empty($this->budget_max) &&
                !empty($this->preferred_location);

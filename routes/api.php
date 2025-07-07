@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProfileCompletionController;
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -100,5 +101,11 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::post('/check', 'checkIfFavorited');
         Route::get('/count', 'getFavoriteCount');
         Route::delete('/clear-all', 'clearAllFavorites');
+    });
+
+    // Profile Routes
+    Route::controller(ProfileController::class)->prefix('profiles')->group(function () {
+        Route::get('/random', 'getRandomProfiles');
+        Route::get('/matching', 'getMatchingProfiles');
     });
 });
