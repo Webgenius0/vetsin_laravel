@@ -133,12 +133,20 @@ class ProfileController extends Controller
                     'match_score' => $profile->match_score,
                     'is_favorite' => $user->hasFavorited($profile->id),
                     'is_both_favorite' => true,
+
                 ];
             });
 
             // Return response with accurate pagination info
             return $this->success([
                 'profiles' => $profilesData,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'avatar' => $user->avatar,
+                    'location' => $user->location,
+                    'identity' => $user->identity,
+                ],
                 'pagination' => [
                     'current_page' => $page,
                     'last_page' => (int) ceil($total / $perPage),
