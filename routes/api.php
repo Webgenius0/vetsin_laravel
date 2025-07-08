@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\LoginController;
-use App\Http\Controllers\Api\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SocialAuthController;
 use App\Http\Controllers\Api\Auth\RegisterController;
@@ -10,8 +9,9 @@ use App\Http\Controllers\Api\FaqController;
 use App\Http\Controllers\Api\SitesettingController;
 use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ProfileCompletionController;
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\PropertyListingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -81,6 +81,12 @@ Route::controller(FaqController::class)->group(function () {
     Route::get('/faq/all', 'FaqAll');
 });
 
+// Property Listings (public index/show, rest require auth)
+Route::controller(PropertyListingController::class)->group(function () {
+    Route::get('/property-listings', 'index');
+    Route::get('/property-listings/{id}', 'show');
+});
+
 Route::group(['middleware' => ['jwt.verify']], function () {
 
     Route::controller(UserController::class)->prefix('users')->group(function () {
@@ -100,5 +106,18 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::post('/check', 'checkIfFavorited');
         Route::get('/count', 'getFavoriteCount');
         Route::delete('/clear-all', 'clearAllFavorites');
+    });
+
+    // Profile Routes
+    Route::controller(ProfileController::class)->prefix('profiles')->group(function () {
+        Route::get('/random', 'getRandomProfiles');
+        Route::get('/matching', 'getMatchingProfiles');
+        Route::get('/details/{id}', 'getProfileDetails');
+    });
+
+    Route::controller(PropertyListingController::class)->group(function () {
+        Route::post('/property-listings', 'store');
+        Route::post('/property-listings/{id}', 'update');
+        Route::delete('/property-listings/{id}', 'destroy');
     });
 });

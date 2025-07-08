@@ -51,6 +51,7 @@ class RegisterController extends Controller {
         $validator = Validator::make($request->all(), [
             'name'           => 'required|string|max:255',
             'email'          => 'required|email|unique:users,email',
+            'avatar'         => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5120',
             'password'       => [
                 'required',
                 'string',
@@ -87,10 +88,20 @@ class RegisterController extends Controller {
         }
 
         try {
+
+            //upload avatar if exists
+            if ($request->hasFile('avatar')) {
+                $avatarPath = uploadImage($request->file('avatar'), 'User/Avatar');
+                $request->merge(['avatar' => $avatarPath]);
+            } else {
+                $request->merge(['avatar' => null]);
+            }
+
             // Find the user by ID
             $user                 = new User();
             $user->name           = $request->input('name');
             $user->email          = $request->input('email');
+            $user->avatar         = $request->input('avatar');
             $user->password       = Hash::make($request->input('password')); // Hash the password
             $user->agree_to_terms = $request->input('agree_to_terms');
 
