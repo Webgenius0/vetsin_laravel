@@ -142,4 +142,12 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->favoritedBy()->where('user_id', $userId)->exists();
     }
+
+    /**
+     * Get property listings created by this user
+     */
+    public function propertyListings()
+    {
+        return $this->hasMany(PropertyListing::class);
+    }
 }

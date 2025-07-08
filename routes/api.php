@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\PropertyListingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,12 @@ Route::controller(FaqController::class)->group(function () {
     Route::get('/faq/all', 'FaqAll');
 });
 
+// Property Listings (public index/show, rest require auth)
+Route::controller(PropertyListingController::class)->group(function () {
+    Route::get('/property-listings', 'index');
+    Route::get('/property-listings/{id}', 'show');
+});
+
 Route::group(['middleware' => ['jwt.verify']], function () {
 
     Route::controller(UserController::class)->prefix('users')->group(function () {
@@ -106,5 +113,11 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::get('/random', 'getRandomProfiles');
         Route::get('/matching', 'getMatchingProfiles');
         Route::get('/details/{id}', 'getProfileDetails');
+    });
+
+    Route::controller(PropertyListingController::class)->group(function () {
+        Route::post('/property-listings', 'store');
+        Route::post('/property-listings/{id}', 'update');
+        Route::delete('/property-listings/{id}', 'destroy');
     });
 });

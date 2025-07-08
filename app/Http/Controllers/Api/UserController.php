@@ -48,6 +48,23 @@ class UserController extends Controller {
         $validator = Validator::make($request->all(), [
             'avatar'  => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5120',
             'name'    => 'required|string|max:255',
+            // Dating app fields
+            'date_of_birth' => 'nullable|date|before:today',
+            'location' => 'nullable|string|max:255',
+            'relationship_goal' => 'nullable|in:casual,serious,friendship,marriage',
+            'preferred_age_min' => 'nullable|integer|min:18|max:100',
+            'preferred_age_max' => 'nullable|integer|min:18|max:100',
+            'preferred_property_type' => 'nullable|in:apartment,house,condo,townhouse,studio,any',
+            'identity' => 'nullable|in:buyer,seller,renter,investor',
+            'budget_min' => 'nullable|numeric|min:0',
+            'budget_max' => 'nullable|numeric|min:0',
+            'preferred_location' => 'nullable|string|max:255',
+            'perfect_weekend' => 'nullable|string|max:1000',
+            'cant_live_without' => 'nullable|string|max:1000',
+            'quirky_fact' => 'nullable|string|max:1000',
+            'about_me' => 'nullable|string|max:2000',
+            'tags' => 'nullable|array',
+            'tags.*' => 'string|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -64,14 +81,12 @@ class UserController extends Controller {
             }
 
             if ($request->hasFile('avatar')) {
-
                 if ($user->avatar) {
                     $previousImagePath = public_path($user->avatar);
                     if (file_exists($previousImagePath)) {
                         unlink($previousImagePath);
                     }
                 }
-
                 $image     = $request->file('avatar');
                 $imageName = uploadImage($image, 'User/Avatar');
             } else {
@@ -80,6 +95,30 @@ class UserController extends Controller {
 
             $user->name    = $request->name;
             $user->avatar  = $imageName;
+
+            // Update dating profile fields if present
+            $fields = [
+                'date_of_birth',
+                'location',
+                'relationship_goal',
+                'preferred_age_min',
+                'preferred_age_max',
+                'preferred_property_type',
+                'identity',
+                'budget_min',
+                'budget_max',
+                'preferred_location',
+                'perfect_weekend',
+                'cant_live_without',
+                'quirky_fact',
+                'about_me',
+                'tags',
+            ];
+            foreach ($fields as $field) {
+                if ($request->has($field)) {
+                    $user->$field = $request->input($field);
+                }
+            }
 
             $user->save();
 
