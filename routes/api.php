@@ -81,11 +81,6 @@ Route::controller(FaqController::class)->group(function () {
     Route::get('/faq/all', 'FaqAll');
 });
 
-// Property Listings (public index/show, rest require auth)
-Route::controller(PropertyListingController::class)->group(function () {
-    Route::get('/property-listings', 'index');
-    Route::get('/property-listings/{id}', 'show');
-});
 
 Route::group(['middleware' => ['jwt.verify']], function () {
 
@@ -116,6 +111,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
     });
 
     Route::controller(PropertyListingController::class)->group(function () {
+        Route::get('/property-listings', 'index');
+        Route::get('/property-listings/{id}', 'show');
         Route::post('/property-listings', 'store');
         Route::post('/property-listings/{id}', 'update');
         Route::delete('/property-listings/{id}', 'destroy');
