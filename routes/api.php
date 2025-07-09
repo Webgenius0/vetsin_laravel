@@ -119,5 +119,6 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::post('/property-listings', 'store');
         Route::post('/property-listings/{id}', 'update');
         Route::delete('/property-listings/{id}', 'destroy');
+        Route::get('/my-properties', 'myProperties');
     });
 });
