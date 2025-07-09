@@ -152,4 +152,18 @@ class PropertyListingController extends Controller
         $listing->delete();
         return $this->success([], 'Property listing deleted successfully', 200);
     }
+
+    /**
+     * Get all property listings belonging to the authenticated user
+     */
+    public function myProperties(Request $request)
+    {
+        $user = auth()->user();
+        $perPage = min($request->get('per_page', 10), 50);
+        $listings = PropertyListing::where('user_id', $user->id)
+                                  ->latest()
+                                  ->paginate($perPage);
+
+        return $this->success($listings, 'My property listings fetched successfully', 200);
+    }
 }

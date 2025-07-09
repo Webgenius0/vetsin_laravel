@@ -65,7 +65,7 @@ class ProfileController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getMatchingProfiles(Request $request)
+    public function     getMatchingProfiles(Request $request)
     {
         try {
             $user = auth()->user();
