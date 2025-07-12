@@ -99,6 +99,7 @@ class ProfileController extends Controller
                     $q->where('preferred_property_type', $user->preferred_property_type)
                         ->orWhere('identity', $user->identity);
                 });
+
             }
 
             // Get all potential matches
