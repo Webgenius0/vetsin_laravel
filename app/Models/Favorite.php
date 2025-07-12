@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Favorite extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     protected $guarded = [];
 
@@ -39,4 +39,4 @@ class Favorite extends Model
     {
         return $this->belongsTo(User::class, 'favorite_user_id');
     }
-} 
+}
