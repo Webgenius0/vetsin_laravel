@@ -124,6 +124,7 @@ class FavoriteController extends Controller
                         'relationship_goal' => $favoriteUser->relationship_goal,
                         'age' => $favoriteUser->age,
                         'about_me' => $favoriteUser->about_me,
+                        'identity' => $favoriteUser->identity,
                         'tags' => $favoriteUser->tags,
                     ],
                     'created_at' => $favorite->created_at,
@@ -248,4 +249,4 @@ class FavoriteController extends Controller
             return $this->error([], $e->getMessage(), 500);
         }
     }
-} 
+}
