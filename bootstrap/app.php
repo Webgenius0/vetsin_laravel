@@ -12,11 +12,15 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
+        channels: __DIR__.'/../routes/channels.php',
         health: '/up',
         then: function () {
             Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
+            Route::middleware('api', 'jwt.verify')
+                ->prefix('api')
+                ->group(base_path('routes/chat.php'));
 
             Route::middleware(['web', 'auth', 'admin', 'LogVisits'])
                 ->prefix('admin')
