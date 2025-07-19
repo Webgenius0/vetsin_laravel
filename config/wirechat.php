@@ -41,7 +41,7 @@ return [
      */
     'routes' => [
         'prefix' => '/chats',
-        'middleware' => ['web', 'auth'],
+        'middleware' => ['web', 'auth','api'],
     ],
 
     /**
