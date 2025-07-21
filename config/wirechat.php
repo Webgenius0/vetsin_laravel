@@ -41,7 +41,7 @@ return [
      */
     'routes' => [
         'prefix' => '/chats',
-        'middleware' => ['web', 'auth','api'],
+        'middleware' => ['web', 'auth'],
     ],
 
     /**
@@ -82,6 +82,10 @@ return [
         // File Config
         'file_mimes' => ['zip', 'rar', 'txt', 'pdf'],
         'file_max_upload_size' => 12288, // 12 MB
+    ],
+    'notifications' => [
+        'enabled' => true,
+        'main_sw_script' => 'sw.js', // Relative to the public folder
     ],
 
 ];
