@@ -41,9 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'LogVisits' => LogVisits::class,
         ]);
     })
-//    ->withBroadcasting(__DIR__.'/../routes/channels.php',[
-//       'prefix' => 'api', 'middleware' => ['jwt.verify'
-//    ]])
+    ->withBroadcasting(    __DIR__.'/../routes/channels.php',    ['prefix' => 'api', 'middleware' => ['jwt.verify']],)
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
