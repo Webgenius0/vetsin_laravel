@@ -170,7 +170,7 @@ class ChatController extends Controller
             broadcast(new CustomMessageCreated($chat));
             $participant = $chat->conversation->participant($toUser);
             if ($participant) {
-                broadcast(new NotifyParticipant($participant, $chat));
+//                broadcast(new NotifyParticipant($participant, $chat));
             }
 
 
