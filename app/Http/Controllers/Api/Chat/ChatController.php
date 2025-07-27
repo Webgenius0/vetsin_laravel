@@ -16,6 +16,7 @@ use Namu\WireChat\Events\MessageCreated;
 use Namu\WireChat\Events\NotifyParticipant;
 use Namu\WireChat\Models\Conversation;
 use Namu\WireChat\Models\Message;
+use App\Events\CustomMessageCreated;
 
 class ChatController extends Controller
 {
@@ -165,7 +166,8 @@ class ChatController extends Controller
                 ]);
             }
 
-            broadcast(new MessageCreated($chat));
+//            broadcast(new MessageCreated($chat));
+            broadcast(new CustomMessageCreated($chat));
             $participant = $chat->conversation->participant($toUser);
             if ($participant) {
                 broadcast(new NotifyParticipant($participant, $chat));
