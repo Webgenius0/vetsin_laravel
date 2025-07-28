@@ -9,6 +9,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class CustomMessageCreated implements ShouldBroadcastNow
 {
@@ -34,6 +35,10 @@ class CustomMessageCreated implements ShouldBroadcastNow
      */
     public function broadcastOn()
     {
+        Log::info("broadcastOn conversation_id", [
+            'conversation_id' => $this->message->conversation_id,
+            'message_id' => $this->message->id
+        ]);
         // You can customize the channel as needed
         return new PrivateChannel('chat.' . $this->message->conversation_id);
     }
