@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "79a3f20bff2206112976b00040b0a16d",
+    "content-hash": "6ea8f827daee5ba387018b0abb4cec55",
     "packages": [
         {
             "name": "brick/math",
@@ -3754,16 +3754,16 @@
         },
         {
             "name": "phpoffice/phpspreadsheet",
-            "version": "2.3.9",
+            "version": "2.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PhpSpreadsheet.git",
-                "reference": "12e0d9f5ef459bf4d3427ef1bbe256b0d85f1e3a"
+                "reference": "22058ce75b774bf40ceefcadd090a424d558f1ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/12e0d9f5ef459bf4d3427ef1bbe256b0d85f1e3a",
-                "reference": "12e0d9f5ef459bf4d3427ef1bbe256b0d85f1e3a",
+                "url": "https://api.github.com/repos/PHPOffice/PhpSpreadsheet/zipball/22058ce75b774bf40ceefcadd090a424d558f1ca",
+                "reference": "22058ce75b774bf40ceefcadd090a424d558f1ca",
                 "shasum": ""
             },
             "require": {
@@ -3853,9 +3853,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PHPOffice/PhpSpreadsheet/issues",
-                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/2.3.9"
+                "source": "https://github.com/PHPOffice/PhpSpreadsheet/tree/2.3.10"
             },
-            "time": "2025-06-23T01:20:15+00:00"
+            "time": "2025-07-23T04:43:28+00:00"
         },
         {
             "name": "phpoption/phpoption",
@@ -9033,16 +9033,16 @@
         },
         {
             "name": "laravel/breeze",
-            "version": "v2.3.7",
+            "version": "v2.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/breeze.git",
-                "reference": "73149b5d84be3881b2fdda94b2ad289e7905c1a4"
+                "reference": "1a29c5792818bd4cddf70b5f743a227e02fbcfcd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/breeze/zipball/73149b5d84be3881b2fdda94b2ad289e7905c1a4",
-                "reference": "73149b5d84be3881b2fdda94b2ad289e7905c1a4",
+                "url": "https://api.github.com/repos/laravel/breeze/zipball/1a29c5792818bd4cddf70b5f743a227e02fbcfcd",
+                "reference": "1a29c5792818bd4cddf70b5f743a227e02fbcfcd",
                 "shasum": ""
             },
             "require": {
@@ -9090,7 +9090,7 @@
                 "issues": "https://github.com/laravel/breeze/issues",
                 "source": "https://github.com/laravel/breeze"
             },
-            "time": "2025-06-17T13:07:20+00:00"
+            "time": "2025-07-18T18:49:59+00:00"
         },
         {
             "name": "laravel/pail",
@@ -9242,16 +9242,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.43.1",
+            "version": "v1.44.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "3e7d899232a8c5e3ea4fc6dee7525ad583887e72"
+                "reference": "a09097bd2a8a38e23ac472fa6a6cf5b0d1c1d3fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/3e7d899232a8c5e3ea4fc6dee7525ad583887e72",
-                "reference": "3e7d899232a8c5e3ea4fc6dee7525ad583887e72",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/a09097bd2a8a38e23ac472fa6a6cf5b0d1c1d3fe",
+                "reference": "a09097bd2a8a38e23ac472fa6a6cf5b0d1c1d3fe",
                 "shasum": ""
             },
             "require": {
@@ -9301,7 +9301,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2025-05-19T13:19:21+00:00"
+            "time": "2025-07-04T16:17:06+00:00"
         },
         {
             "name": "mockery/mockery",
