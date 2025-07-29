@@ -7,7 +7,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('chat.{conversationId}', function ($user, $conversationId) {
-    return true;
     \Illuminate\Support\Facades\Log::info("chat connected", [
         'user_id' => $user->id,
         'conversation_id' => $conversationId,
