@@ -166,7 +166,7 @@ class ChatController extends Controller
                 ]);
             }
 
-//            broadcast(new MessageCreated($chat));
+            broadcast(new MessageCreated($chat));
             broadcast(new CustomMessageCreated($chat));
             $participant = $chat->conversation->participant($toUser);
             if ($participant) {

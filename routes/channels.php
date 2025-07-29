@@ -10,11 +10,13 @@ Broadcast::channel('chat.{conversationId}', function ($user, $conversationId) {
 
     \Illuminate\Support\Facades\Log::info("chat connected", [
         'user_id' => $user->id,
-        'conversation_id' => $conversationId
+        'conversation_id' => $conversationId,
+        'user_authenticated' => auth()->check(),
+        'user_id_from_auth' => auth()->id()
     ]);
-    if ($user->conversations()->where('id', $conversationId)->exists()){
+
+    if ($user->conversations()->where('wire_conversations.id', $conversationId)->exists()){
         return true;
-        \Illuminate\Support\Facades\Log::info("connected to chat");
     } else {
         return false;
     }
