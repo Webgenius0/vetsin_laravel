@@ -86,6 +86,11 @@ class LoginController extends Controller {
         $userData = User::where('email', $request->email)->first();
 
         if ($userData && Hash::check($request->password, $userData->password)) {
+            // Update device token if provided
+            if ($request->has('device_token')) {
+                $userData->device_token = $request->input('device_token');
+                $userData->save();
+            }
             if($userData->email_verified_at == null) {
 
                 $this->verifyOTP($userData);
@@ -106,11 +111,6 @@ class LoginController extends Controller {
             return $this->error([], 'Invalid credentials', 401);
         }
 
-        // Update device token if provided
-        if ($request->has('device_token')) {
-            $userData->device_token = $request->input('device_token');
-            $userData->save();
-        }
 
         return $this->success($userData, 'User authenticated successfully', 200);
     }

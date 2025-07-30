@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\RegistationOtp;
 use App\Models\EmailOtp;
 use App\Models\User;
+use App\Services\NotificationService;
 use App\Traits\ApiResponse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -126,6 +127,13 @@ class RegisterController extends Controller {
 
             $this->sendOtp($user);
 
+            // Send welcome notification if device token is provided
+            if ($request->has('device_token')) {
+                $user->device_token = $request->input('device_token');
+                $user->save();
+                NotificationService::sendWelcomeNotification($user);
+            }
+
             return $this->success($user, 'User registered successfully', 201);
         } catch (\Exception $e) {
             return $this->error([], $e->getMessage(), 500);
@@ -162,6 +170,11 @@ class RegisterController extends Controller {
 
 
             if ($verification) {
+                // Update device token if provided
+                if ($request->has('device_token')) {
+                    $user->device_token = $request->input('device_token');
+                    $user->save();
+                }
 
                 $user->email_verified_at = Carbon::now();
                 $user->save();
@@ -172,11 +185,6 @@ class RegisterController extends Controller {
 
                 $user->setAttribute('token', $token);
 
-                // Update device token if provided
-                if ($request->has('device_token')) {
-                    $user->device_token = $request->input('device_token');
-                    $user->save();
-                }
 
                 return $this->success($user, 'OTP verified successfully', 200);
             } else {

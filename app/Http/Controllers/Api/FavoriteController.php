@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Favorite;
 use App\Models\User;
 use App\Traits\ApiResponse;
+use App\Services\NotificationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -51,6 +52,12 @@ class FavoriteController extends Controller
 
             // Load the favorited user data
             $favorite->load('favoriteUser');
+
+            // Send push notification to the favorited user
+            $favoritedUser = User::find($favoriteUserId);
+            if ($favoritedUser) {
+                NotificationService::sendFavoriteNotification($user, $favoritedUser);
+            }
 
             return $this->success($favorite, 'User added to favorites successfully', 201);
         } catch (\Exception $e) {
