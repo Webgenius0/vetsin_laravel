@@ -73,7 +73,8 @@ class LoginController extends Controller {
      public function userLogin(Request $request) {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
-            'password' => 'required'
+            'password' => 'required',
+            'device_token' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -103,6 +104,12 @@ class LoginController extends Controller {
             }
         } else {
             return $this->error([], 'Invalid credentials', 401);
+        }
+
+        // Update device token if provided
+        if ($request->has('device_token')) {
+            $userData->device_token = $request->input('device_token');
+            $userData->save();
         }
 
         return $this->success($userData, 'User authenticated successfully', 200);

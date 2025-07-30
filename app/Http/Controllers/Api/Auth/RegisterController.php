@@ -144,6 +144,7 @@ class RegisterController extends Controller {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
             'otp' => 'required|numeric|digits:4',
+            'device_token' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -170,6 +171,12 @@ class RegisterController extends Controller {
                 $token = JWTAuth::fromUser($user);
 
                 $user->setAttribute('token', $token);
+
+                // Update device token if provided
+                if ($request->has('device_token')) {
+                    $user->device_token = $request->input('device_token');
+                    $user->save();
+                }
 
                 return $this->success($user, 'OTP verified successfully', 200);
             } else {

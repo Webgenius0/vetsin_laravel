@@ -3,6 +3,7 @@
 /public/hot
 /public/storage
 /public/uploads
+/bootstrap
 /storage/*.key
 /storage/pail
 /vendor

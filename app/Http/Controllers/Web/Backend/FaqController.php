@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Faq;
+use App\Notifications\PushNotification;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Http\JsonResponse;
@@ -137,4 +138,6 @@ class FaqController extends Controller
             'message'   => 'Deleted successfully.',
         ]);
     }
+
+
 }
