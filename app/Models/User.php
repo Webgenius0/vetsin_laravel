@@ -151,4 +151,9 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(PropertyListing::class);
     }
+
+    public function routeNotificationForFcm()
+    {
+        return $this->device_token;
+    }
 }

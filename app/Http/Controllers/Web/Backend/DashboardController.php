@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\PushNotification;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Faq;
@@ -43,5 +44,20 @@ class DashboardController extends Controller
             'labels',
             'data'
         ));
+    }
+
+    public function testNotification() {
+
+        $user = auth()->user();
+
+        $user->notify(new PushNotification('This is custom title', "this is custom body"));
+        return response()->json([
+            'message' => 'Notification sent successfully',
+            'status' => 'success',
+            'data' => [
+                'title' => 'This is custom title',
+                'body' => 'this is custom body'
+            ]
+        ]);
     }
 }
