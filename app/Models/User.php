@@ -74,6 +74,7 @@ class User extends Authenticatable implements JWTSubject
             'budget_min' => 'decimal:2',
             'budget_max' => 'decimal:2',
             'tags' => 'array',
+            'device_token' => 'string',
         ];
     }
 

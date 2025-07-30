@@ -17,6 +17,7 @@ use Namu\WireChat\Events\NotifyParticipant;
 use Namu\WireChat\Models\Conversation;
 use Namu\WireChat\Models\Message;
 use App\Events\CustomMessageCreated;
+use App\Services\NotificationService;
 
 class ChatController extends Controller
 {
@@ -172,6 +173,14 @@ class ChatController extends Controller
             if ($participant) {
                 broadcast(new NotifyParticipant($participant, $chat));
             }
+
+            // Send push notification to the recipient
+            NotificationService::sendChatNotification(
+                $formUser, 
+                $toUser, 
+                $request->message, 
+                $request->hasFile('file')
+            );
 
 
             $chat->conversation->load([
