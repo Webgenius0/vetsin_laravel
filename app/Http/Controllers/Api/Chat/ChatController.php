@@ -179,7 +179,8 @@ class ChatController extends Controller
                 $formUser, 
                 $toUser, 
                 $request->message, 
-                $request->hasFile('file')
+                $request->hasFile('file'),
+                $conversation->id
             );
 
 

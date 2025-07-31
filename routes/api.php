@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PropertyListingController;
+use App\Http\Controllers\Api\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,5 +118,16 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::post('/property-listings/{id}', 'update');
         Route::delete('/property-listings/{id}', 'destroy');
         Route::get('/my-properties', 'myProperties');
+    });
+
+    // Notification routes
+    Route::controller(NotificationController::class)->prefix('notifications')->group(function () {
+        Route::get('/', 'getNotifications');
+        Route::get('/unread-count', 'getUnreadCount');
+        Route::get('/stats', 'getNotificationStats');
+        Route::post('/mark-as-read', 'markAsRead');
+        Route::post('/mark-all-as-read', 'markAllAsRead');
+        Route::post('/delete', 'deleteNotification');
+        Route::post('/delete-all', 'deleteAllNotifications');
     });
 });

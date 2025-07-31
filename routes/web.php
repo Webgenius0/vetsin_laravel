@@ -31,15 +31,43 @@ Route::get('/test-push-notification/{email}', function () {
     }
 
     App\Services\NotificationService::sendChatNotification(
-        $user,
-        $user,
-        'This is a test message from the server',
-        false
+        $user, 
+        $user, 
+        'This is a test message from the server', 
+        false,
+        1
     );
 
     return response()->json([
         'message' => 'Push notification sent successfully',
         'user' => $user->name,
         'device_token' => $user->device_token ? 'Present' : 'Missing'
+    ]);
+});
+
+// Test route for database notifications
+Route::get('/test-database-notification/{email}', function () {
+    $email = request()->route('email');
+    $user = \App\Models\User::where('email', $email)->first();
+
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
+    // Test different types of notifications
+    App\Services\NotificationService::sendChatNotification(
+        $user, 
+        $user, 
+        'This is a test database notification message', 
+        false,
+        1
+    );
+
+    App\Services\NotificationService::sendFavoriteNotification($user, $user);
+
+    return response()->json([
+        'message' => 'Database notifications sent successfully',
+        'user' => $user->name,
+        'notifications_count' => $user->notifications()->count()
     ]);
 });
