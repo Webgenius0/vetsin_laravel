@@ -68,6 +68,30 @@ Route::get('/test-database-notification/{email}', function () {
     return response()->json([
         'message' => 'Database notifications sent successfully',
         'user' => $user->name,
+        'notifications_enabled' => $user->notifications_enabled,
         'notifications_count' => $user->notifications()->count()
+    ]);
+});
+
+// Test route for notification toggle
+Route::get('/test-notification-toggle/{email}', function () {
+    $email = request()->route('email');
+    $user = \App\Models\User::where('email', $email)->first();
+
+    if (!$user) {
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
+    // Toggle notifications
+    $oldStatus = $user->notifications_enabled;
+    $user->notifications_enabled = !$oldStatus;
+    $user->save();
+
+    return response()->json([
+        'message' => 'Notification toggle test completed',
+        'user' => $user->name,
+        'previous_status' => $oldStatus,
+        'new_status' => $user->notifications_enabled,
+        'status_text' => $user->notifications_enabled ? 'enabled' : 'disabled'
     ]);
 });

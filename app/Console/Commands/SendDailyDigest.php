@@ -30,7 +30,9 @@ class SendDailyDigest extends Command
     {
         $this->info('Starting daily digest notifications...');
 
-        $users = User::whereNotNull('device_token')->get();
+        $users = User::whereNotNull('device_token')
+            ->where('notifications_enabled', true)
+            ->get();
         $count = 0;
 
         foreach ($users as $user) {

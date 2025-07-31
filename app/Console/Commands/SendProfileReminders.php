@@ -29,8 +29,9 @@ class SendProfileReminders extends Command
     {
         $this->info('Starting profile completion reminders...');
 
-        // Get users with incomplete profiles who have device tokens
+        // Get users with incomplete profiles who have device tokens and notifications enabled
         $users = User::whereNotNull('device_token')
+            ->where('notifications_enabled', true)
             ->where(function ($query) {
                 $query->whereNull('date_of_birth')
                       ->orWhereNull('location')

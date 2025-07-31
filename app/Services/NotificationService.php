@@ -16,6 +16,11 @@ class NotificationService
      */
     public static function sendChatNotification($sender, $recipient, $message, $isFile = false, $conversationId = null)
     {
+        // Check if recipient has notifications enabled
+        if (!$recipient->notifications_enabled) {
+            return;
+        }
+        
         $messageType = $isFile ? 'sent you a file' : 'sent you a message';
         $messageBody = $isFile ? 'Tap to view' : $message;
         
@@ -42,6 +47,11 @@ class NotificationService
      */
     public static function sendFavoriteNotification($favoriter, $favoritedUser)
     {
+        // Check if user has notifications enabled
+        if (!$favoritedUser->notifications_enabled) {
+            return;
+        }
+        
         // Send database notification
         $favoritedUser->notify(new FavoriteNotification($favoriter));
         
@@ -59,9 +69,10 @@ class NotificationService
      */
     public static function sendPropertyListingNotification($listing, $creator)
     {
-        // Find users with matching preferences
+        // Find users with matching preferences and notifications enabled
         $interestedUsers = User::where('identity', 'buyer')
             ->where('preferred_property_type', $listing->property_type)
+            ->where('notifications_enabled', true)
             ->where('id', '!=', $creator->id)
             ->limit(10) // Limit to avoid spam
             ->get();
@@ -85,23 +96,29 @@ class NotificationService
      */
     public static function sendMatchNotification($user1, $user2)
     {
-        // Send database notifications
-        $user1->notify(new MatchNotification($user2));
-        $user2->notify(new MatchNotification($user1));
-        
-        // Send push notifications if device tokens exist
-        if ($user1->device_token) {
-            $user1->notify(new PushNotification(
-                'New Match! 🎉',
-                'You matched with ' . $user2->name . '! Start a conversation now.'
-            ));
+        // Send database notifications only if users have notifications enabled
+        if ($user1->notifications_enabled) {
+            $user1->notify(new MatchNotification($user2));
+            
+            // Send push notification if device token exists
+            if ($user1->device_token) {
+                $user1->notify(new PushNotification(
+                    'New Match! 🎉',
+                    'You matched with ' . $user2->name . '! Start a conversation now.'
+                ));
+            }
         }
 
-        if ($user2->device_token) {
-            $user2->notify(new PushNotification(
-                'New Match! 🎉',
-                'You matched with ' . $user1->name . '! Start a conversation now.'
-            ));
+        if ($user2->notifications_enabled) {
+            $user2->notify(new MatchNotification($user1));
+            
+            // Send push notification if device token exists
+            if ($user2->device_token) {
+                $user2->notify(new PushNotification(
+                    'New Match! 🎉',
+                    'You matched with ' . $user1->name . '! Start a conversation now.'
+                ));
+            }
         }
     }
 
@@ -125,6 +142,11 @@ class NotificationService
      */
     public static function sendWelcomeNotification($user)
     {
+        // Check if user has notifications enabled
+        if (!$user->notifications_enabled) {
+            return;
+        }
+        
         if (!$user->device_token) {
             return;
         }
@@ -140,6 +162,11 @@ class NotificationService
      */
     public static function sendProfileCompletionReminder($user)
     {
+        // Check if user has notifications enabled
+        if (!$user->notifications_enabled) {
+            return;
+        }
+        
         if (!$user->device_token || $user->is_profile_complete) {
             return;
         }
@@ -155,6 +182,11 @@ class NotificationService
      */
     public static function sendDailyDigest($user, $newMatches, $newMessages, $newFavorites)
     {
+        // Check if user has notifications enabled
+        if (!$user->notifications_enabled) {
+            return;
+        }
+        
         if (!$user->device_token) {
             return;
         }
