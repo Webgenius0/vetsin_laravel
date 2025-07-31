@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PropertyListingController;
 use App\Http\Controllers\Api\NotificationController;
+use App\Http\Controllers\Api\NotificationSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -129,5 +130,10 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::post('/mark-all-as-read', 'markAllAsRead');
         Route::post('/delete', 'deleteNotification');
         Route::post('/delete-all', 'deleteAllNotifications');
+    });
+
+    // Notification Settings routes
+    Route::controller(NotificationSettingsController::class)->prefix('notification-settings')->group(function () {
+        Route::post('/toggle', 'toggleNotifications');
     });
 });

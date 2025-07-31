@@ -67,6 +67,7 @@ class User extends Authenticatable implements JWTSubject
             'email_verified_at' => 'datetime',
             'agree_to_terms' => 'boolean',
             'is_premium' => 'boolean',
+            'notifications_enabled' => 'boolean',
             'id' => 'integer',
             'date_of_birth' => 'date',
             'preferred_age_min' => 'integer',
