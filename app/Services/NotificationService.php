@@ -4,30 +4,37 @@ namespace App\Services;
 
 use App\Models\User;
 use App\Notifications\PushNotification;
+use App\Notifications\DatabaseNotifications\ChatMessageNotification;
+use App\Notifications\DatabaseNotifications\FavoriteNotification;
+use App\Notifications\DatabaseNotifications\PropertyListingNotification;
+use App\Notifications\DatabaseNotifications\MatchNotification;
 
 class NotificationService
 {
     /**
      * Send chat message notification
      */
-    public static function sendChatNotification($sender, $recipient, $message, $isFile = false)
+    public static function sendChatNotification($sender, $recipient, $message, $isFile = false, $conversationId = null)
     {
-        if (!$recipient->device_token) {
-            return;
-        }
-
         $messageType = $isFile ? 'sent you a file' : 'sent you a message';
         $messageBody = $isFile ? 'Tap to view' : $message;
         
-        // Truncate message body if too long
-        if (strlen($messageBody) > 100) {
-            $messageBody = substr($messageBody, 0, 97) . '...';
+        // Truncate message body if too long for push notification
+        $truncatedBody = $messageBody;
+        if (strlen($truncatedBody) > 100) {
+            $truncatedBody = substr($truncatedBody, 0, 97) . '...';
         }
         
-        $recipient->notify(new PushNotification(
-            $sender->name . ' ' . $messageType,
-            $messageBody
-        ));
+        // Send database notification
+        $recipient->notify(new ChatMessageNotification($sender, $messageBody, $conversationId));
+        
+        // Send push notification if device token exists
+        if ($recipient->device_token) {
+            $recipient->notify(new PushNotification(
+                $sender->name . ' ' . $messageType,
+                $truncatedBody
+            ));
+        }
     }
 
     /**
@@ -35,14 +42,16 @@ class NotificationService
      */
     public static function sendFavoriteNotification($favoriter, $favoritedUser)
     {
-        if (!$favoritedUser->device_token) {
-            return;
+        // Send database notification
+        $favoritedUser->notify(new FavoriteNotification($favoriter));
+        
+        // Send push notification if device token exists
+        if ($favoritedUser->device_token) {
+            $favoritedUser->notify(new PushNotification(
+                $favoriter->name . ' added you to favorites!',
+                'Someone is interested in your profile. Tap to view!'
+            ));
         }
-
-        $favoritedUser->notify(new PushNotification(
-            $favoriter->name . ' added you to favorites!',
-            'Someone is interested in your profile. Tap to view!'
-        ));
     }
 
     /**
@@ -53,16 +62,21 @@ class NotificationService
         // Find users with matching preferences
         $interestedUsers = User::where('identity', 'buyer')
             ->where('preferred_property_type', $listing->property_type)
-            ->where('device_token', '!=', null)
             ->where('id', '!=', $creator->id)
             ->limit(10) // Limit to avoid spam
             ->get();
 
         foreach ($interestedUsers as $interestedUser) {
-            $interestedUser->notify(new PushNotification(
-                'New ' . ucfirst($listing->property_type) . ' Available!',
-                $listing->title . ' in ' . ($listing->location ?? 'your area')
-            ));
+            // Send database notification
+            $interestedUser->notify(new PropertyListingNotification($listing, $creator));
+            
+            // Send push notification if device token exists
+            if ($interestedUser->device_token) {
+                $interestedUser->notify(new PushNotification(
+                    'New ' . ucfirst($listing->property_type) . ' Available!',
+                    $listing->title . ' in ' . ($listing->location ?? 'your area')
+                ));
+            }
         }
     }
 
@@ -71,6 +85,11 @@ class NotificationService
      */
     public static function sendMatchNotification($user1, $user2)
     {
+        // Send database notifications
+        $user1->notify(new MatchNotification($user2));
+        $user2->notify(new MatchNotification($user1));
+        
+        // Send push notifications if device tokens exist
         if ($user1->device_token) {
             $user1->notify(new PushNotification(
                 'New Match! 🎉',
