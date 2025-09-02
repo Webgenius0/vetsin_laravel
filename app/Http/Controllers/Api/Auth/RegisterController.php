@@ -10,12 +10,14 @@ use App\Services\NotificationService;
 use App\Traits\ApiResponse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class RegisterController extends Controller {
+class RegisterController extends Controller
+{
 
     use ApiResponse;
 
@@ -26,7 +28,8 @@ class RegisterController extends Controller {
      * @return void
      */
 
-    private function sendOtp($user) {
+    private function sendOtp($user)
+    {
         $code = rand(1000, 9999);
 
         // Store verification code in the database
@@ -48,11 +51,14 @@ class RegisterController extends Controller {
      * @return \Illuminate\Http\JsonResponse  JSON response with success or error.
      */
 
-    public function userRegister(Request $request) {
+    public function userRegister(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name'           => 'required|string|max:255',
             'email'          => 'required|email|unique:users,email',
-            'avatar'         => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5120',
+            'avatar'         => 'required|image|mimes:jpeg,png,jpg,svg|max:20480',
+            'images'         => 'nullable|array',
+            'images.*'       => 'image|mimes:jpeg,png,jpg,svg|max:20480',
             'password'       => [
                 'required',
                 'string',
@@ -88,9 +94,10 @@ class RegisterController extends Controller {
             return $this->error($validator->errors(), "Validation Error", 422);
         }
 
+        DB::beginTransaction();
         try {
 
-            //upload avatar if exists
+            // upload avatar if exists
             if ($request->hasFile('avatar')) {
                 $avatarPath = uploadImage($request->file('avatar'), 'User/Avatar');
                 $request->merge(['avatar' => $avatarPath]);
@@ -121,9 +128,22 @@ class RegisterController extends Controller {
             $user->cant_live_without = $request->input('cant_live_without');
             $user->quirky_fact = $request->input('quirky_fact');
             $user->about_me = $request->input('about_me');
-            $user->tags = $request->input('tags', []);
 
             $user->save();
+
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $imagePath = uploadImage($image, 'User/Images');
+                    $user->images()->create([
+                        'image_url' => $imagePath,
+                    ]);
+                }
+            }
+
+            if ($request->has('tags')) {
+                $tags = $request->input('tags');
+                $user->tags()->sync($tags, ['created_at' => Carbon::now()]);
+            }
 
             $this->sendOtp($user);
 
@@ -134,8 +154,10 @@ class RegisterController extends Controller {
                 NotificationService::sendWelcomeNotification($user);
             }
 
+            DB::commit();
             return $this->success($user, 'User registered successfully', 201);
         } catch (\Exception $e) {
+            DB::rollBack();
             return $this->error([], $e->getMessage(), 500);
         }
     }
@@ -146,7 +168,8 @@ class RegisterController extends Controller {
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function otpVerify(Request $request) {
+    public function otpVerify(Request $request)
+    {
 
         // Validate the request
         $validator = Validator::make($request->all(), [
@@ -164,9 +187,9 @@ class RegisterController extends Controller {
             $user = User::where('email', $request->input('email'))->first();
 
             $verification = EmailOtp::where('user_id', $user->id)
-            ->where('verification_code', $request->input('otp'))
-            ->where('expires_at', '>', Carbon::now())
-            ->first();
+                ->where('verification_code', $request->input('otp'))
+                ->where('expires_at', '>', Carbon::now())
+                ->first();
 
 
             if ($verification) {
@@ -203,7 +226,8 @@ class RegisterController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
 
-    public function otpResend(Request $request) {
+    public function otpResend(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
@@ -237,6 +261,5 @@ class RegisterController extends Controller {
         }
         // If the email does not exist, return a success response
         return $this->success([], 'Email does not exist', 200);
-
     }
 }

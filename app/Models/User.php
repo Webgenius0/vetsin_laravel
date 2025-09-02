@@ -17,7 +17,7 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, Chatable;
 
-      /**
+    /**
      * Get the identifier that will be stored in the JWT subject claim.
      *
      * @return mixed
@@ -62,7 +62,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
 
-    protected function casts(): array {
+    protected function casts(): array
+    {
         return [
             'email_verified_at' => 'datetime',
             'agree_to_terms' => 'boolean',
@@ -96,10 +97,10 @@ class User extends Authenticatable implements JWTSubject
     public function getIsProfileCompleteAttribute()
     {
         return !empty($this->date_of_birth) &&
-               !empty($this->location) &&
-               !empty($this->relationship_goal) &&
-               !empty($this->preferred_age_min) &&
-               !empty($this->preferred_age_max);
+            !empty($this->location) &&
+            !empty($this->relationship_goal) &&
+            !empty($this->preferred_age_min) &&
+            !empty($this->preferred_age_max);
     }
 
     /**
@@ -108,10 +109,10 @@ class User extends Authenticatable implements JWTSubject
     public function getIsRealEstateCompleteAttribute()
     {
         return !empty($this->preferred_property_type) &&
-               !empty($this->identity) &&
-               !empty($this->budget_min) &&
-               !empty($this->budget_max) &&
-               !empty($this->preferred_location);
+            !empty($this->identity) &&
+            !empty($this->budget_min) &&
+            !empty($this->budget_max) &&
+            !empty($this->preferred_location);
     }
 
     /**
@@ -157,5 +158,15 @@ class User extends Authenticatable implements JWTSubject
     public function routeNotificationForFcm()
     {
         return $this->device_token;
+    }
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(UserImages::class);
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(HashTag::class, 'user_hash_tags', 'user_id', 'hash_tag_id');
     }
 }
