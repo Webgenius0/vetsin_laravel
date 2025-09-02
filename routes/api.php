@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PropertyListingController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\NotificationSettingsController;
+use App\Http\Controllers\Api\UserOptionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,9 @@ Route::controller(RegisterController::class)->prefix('users/register')->group(fu
     //email exists check
     Route::post('/email-exists', 'emailExists');
 });
+
+// User Options
+Route::get('/users/options', [UserOptionsController::class, 'index']);
 
 //Login API
 Route::controller(LoginController::class)->prefix('users/login')->group(function () {
@@ -93,6 +97,9 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::post('/logout', 'logoutUser');
         Route::delete('/delete', 'deleteUser');
     });
+
+
+
 
     // Favorite Routes
     Route::controller(FavoriteController::class)->prefix('favorites')->group(function () {

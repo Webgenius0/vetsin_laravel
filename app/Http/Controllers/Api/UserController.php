@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProfileOption;
 use App\Models\User;
 use App\Traits\ApiResponse;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
     use ApiResponse;
 
     /**
@@ -19,7 +22,8 @@ class UserController extends Controller {
      * @return \Illuminate\Http\JsonResponse  JSON response with success or error.
      */
 
-    public function userData() {
+    public function userData()
+    {
 
         $user = auth()->user();
 
@@ -43,17 +47,32 @@ class UserController extends Controller {
      * @return \Illuminate\Http\JsonResponse  JSON response with success or error.
      */
 
-    public function userUpdate(Request $request) {
+    public function userUpdate(Request $request)
+    {
+
+        // fetch allowed keys from DB
+        $idealValues = ProfileOption::where('group', 'ideal_connection')->pluck('label')->toArray();
+        $relocateValues = ProfileOption::where('group', 'willing_to_relocate')->pluck('label')->toArray();
+     
 
         $validator = Validator::make($request->all(), [
             'avatar'  => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5120',
             'name'    => 'required|string|max:255',
-            // Dating app fields
-            'date_of_birth' => 'nullable|date|before:today',
+
+            // accept MM/DD/YYYY input
+            'date_of_birth' => 'nullable|date_format:m/d/Y|before:today',
+
             'location' => 'nullable|string|max:255',
+
+            // backward compat: relationship_goal (old) - keep allowed list
             'relationship_goal' => 'nullable|in:casual,serious,friendship,marriage',
-            'preferred_age_min' => 'nullable|integer|min:18|max:100',
-            'preferred_age_max' => 'nullable|integer|min:18|max:100',
+
+            'ideal_connection'    => ['nullable', Rule::in($idealValues)],
+            'willing_to_relocate' => ['nullable', Rule::in($relocateValues)],
+
+            'preferred_age_min' => 'nullable|integer|min:18|max:120',
+            'preferred_age_max' => 'nullable|integer|min:18|max:120',
+
             'preferred_property_type' => 'nullable|in:apartment,house,condo,townhouse,studio,any',
             'identity' => 'nullable|in:buyer,seller,renter,investor',
             'budget_min' => 'nullable|numeric|min:0',
@@ -66,6 +85,7 @@ class UserController extends Controller {
             'tags' => 'nullable|array',
             'tags.*' => 'string|max:50',
         ]);
+
 
         if ($validator->fails()) {
             return $this->error($validator->errors(), "Validation Error", 422);
@@ -100,7 +120,9 @@ class UserController extends Controller {
             $fields = [
                 'date_of_birth',
                 'location',
-                'relationship_goal',
+                'relationship_goal',   // legacy (kept)
+                'ideal_connection',    // new
+                'willing_to_relocate', // new
                 'preferred_age_min',
                 'preferred_age_max',
                 'preferred_property_type',
@@ -114,6 +136,7 @@ class UserController extends Controller {
                 'about_me',
                 'tags',
             ];
+
             foreach ($fields as $field) {
                 if ($request->has($field)) {
                     $user->$field = $request->input($field);
@@ -128,13 +151,14 @@ class UserController extends Controller {
         }
     }
 
-     /**
+    /**
      * Change Login User Password
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse JSON response with success or error.
      */
-    public function passwordChange(Request $request) {
+    public function passwordChange(Request $request)
+    {
         // Get the authenticated user
         $user = auth()->user();
 
@@ -172,7 +196,8 @@ class UserController extends Controller {
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse JSON response with success or error.
      */
-    public function logoutUser() {
+    public function logoutUser()
+    {
 
         try {
             JWTAuth::invalidate(JWTAuth::getToken());
@@ -181,7 +206,6 @@ class UserController extends Controller {
         } catch (\Exception $e) {
             return $this->error([], $e->getMessage(), 500);
         }
-
     }
 
     /**
@@ -189,7 +213,8 @@ class UserController extends Controller {
      *
      * @return \Illuminate\Http\JsonResponse JSON response with success or error.
      */
-    public function deleteUser() {
+    public function deleteUser()
+    {
         try {
             // Get the authenticated user
             $user = auth()->user();
