@@ -18,22 +18,19 @@ return new class extends Migration
             $table->enum('relationship_goal', ['casual', 'serious', 'friendship', 'marriage'])->nullable();
             $table->integer('preferred_age_min')->nullable();
             $table->integer('preferred_age_max')->nullable();
-            
+
             // Real estate preferences
             $table->enum('preferred_property_type', ['apartment', 'house', 'condo', 'townhouse', 'studio', 'any'])->nullable();
             $table->enum('identity', ['buyer', 'seller', 'renter', 'investor'])->nullable();
             $table->decimal('budget_min', 12, 2)->nullable();
             $table->decimal('budget_max', 12, 2)->nullable();
             $table->string('preferred_location')->nullable();
-            
+
             // Personal questions
             $table->text('perfect_weekend')->nullable();
             $table->text('cant_live_without')->nullable();
             $table->text('quirky_fact')->nullable();
             $table->text('about_me')->nullable();
-            
-            // Tags (stored as JSON)
-            $table->json('tags')->nullable();
         });
     }
 
@@ -62,4 +59,4 @@ return new class extends Migration
             ]);
         });
     }
-}; 
+};

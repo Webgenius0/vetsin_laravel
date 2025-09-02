@@ -162,6 +162,7 @@ class User extends Authenticatable implements JWTSubject
         return $this->device_token;
     }
 
+<<<<<<< HEAD
 
     /**
      * Accessor & Mutator so API reads/writes date_of_birth as MM/DD/YYYY,
@@ -173,5 +174,15 @@ class User extends Authenticatable implements JWTSubject
             get: fn($value) => $value ? Carbon::parse($value)->format('m/d/Y') : null,
             set: fn($value) => $value ? Carbon::createFromFormat('m/d/Y', $value)->format('Y-m-d') : null
         );
+=======
+    public function images(): HasMany
+    {
+        return $this->hasMany(UserImages::class);
+    }
+
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(HashTag::class, 'user_hash_tags', 'user_id', 'hash_tag_id');
+>>>>>>> e6abb2ff33ab296b6aafc20864616b3658cee6fc
     }
 }

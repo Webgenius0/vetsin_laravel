@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\SitesettingController;
 use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\HashTagsController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PropertyListingController;
 use App\Http\Controllers\Api\NotificationController;
@@ -87,6 +88,10 @@ Route::controller(FaqController::class)->group(function () {
     Route::get('/faq/all', 'FaqAll');
 });
 
+//Hash Tag APIs
+Route::controller(HashTagsController::class)->group(function () {
+    Route::get('/hashtags', 'HashTags');
+});
 
 Route::group(['middleware' => ['jwt.verify']], function () {
 

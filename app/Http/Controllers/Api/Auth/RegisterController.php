@@ -12,6 +12,7 @@ use Illuminate\Validation\Rule;
 use App\Traits\ApiResponse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
@@ -94,6 +95,7 @@ class RegisterController extends Controller
             return $this->error($validator->errors(), "Validation Error", 422);
         }
 
+        DB::beginTransaction();
         try {
             // upload avatar if exists
             if ($request->hasFile('avatar')) {
@@ -127,9 +129,22 @@ class RegisterController extends Controller
             $user->cant_live_without = $request->input('cant_live_without');
             $user->quirky_fact = $request->input('quirky_fact');
             $user->about_me = $request->input('about_me');
-            $user->tags = $request->input('tags', []);
 
             $user->save();
+
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    $imagePath = uploadImage($image, 'User/Images');
+                    $user->images()->create([
+                        'image_url' => $imagePath,
+                    ]);
+                }
+            }
+
+            if ($request->has('tags')) {
+                $tags = $request->input('tags');
+                $user->tags()->sync($tags, ['created_at' => Carbon::now()]);
+            }
 
             $this->sendOtp($user);
 
@@ -139,8 +154,10 @@ class RegisterController extends Controller
                 NotificationService::sendWelcomeNotification($user);
             }
 
+            DB::commit();
             return $this->success($user, 'User registered successfully', 201);
         } catch (\Exception $e) {
+            DB::rollBack();
             return $this->error([], $e->getMessage(), 500);
         }
     }

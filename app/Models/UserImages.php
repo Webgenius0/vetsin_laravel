@@ -2,14 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SocialMedia extends Model
+class UserImages extends Model
 {
-    use HasFactory, SoftDeletes;
-
     protected $guarded = [];
 
     protected $hidden = [
@@ -19,6 +15,12 @@ class SocialMedia extends Model
     ];
 
     protected $casts = [
+        'user_id' => 'integer',
         'id' => 'integer',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
