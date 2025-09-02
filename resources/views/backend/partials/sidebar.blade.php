@@ -127,6 +127,57 @@
                         </div>
                     </div>
                 </div>
+
+                <div data-kt-menu-trigger="click"
+                    class="menu-item {{ request()->routeIs(['age_preference.*','prefered_property_type.*','choose_your_identity.*','budget.*']) ? 'active show' : '' }} menu-accordion">
+                    <span class="menu-link">
+                        <span class="menu-icon">
+                            <i class="fa-solid fa-sliders fs-2"></i>
+                        </span>
+                        <span class="menu-title">Dynamic Input</span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                    <div class="menu-sub menu-sub-accordion">
+                        <div class="menu-item">
+                            <a href="{{ route('age_preference.index') }}"
+                                class="menu-link {{ request()->routeIs(['age_preference.index', 'age_preference.create', 'age_preference.edit']) ? 'active show' : '' }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Age Preference</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="{{ route('prefered_property_type.index') }}"
+                                class="menu-link {{ request()->routeIs(['prefered_property_type.index', 'prefered_property_type.create', 'prefered_property_type.edit']) ? 'active show' : '' }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Prefered Property Type</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="{{ route('choose_your_identity.index') }}"
+                                class="menu-link {{ request()->routeIs(['choose_your_identity.index', 'choose_your_identity.create', 'choose_your_identity.edit']) ? 'active show' : '' }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Choose Your Identity</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="{{ route('budget.index') }}"
+                                class="menu-link {{ request()->routeIs(['budget.index', 'budget.create', 'budget.edit']) ? 'active show' : '' }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">Budget</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
