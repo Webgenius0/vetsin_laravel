@@ -25,5 +25,6 @@ class DatabaseSeeder extends Seeder
         $this->call(HashTagSeeder::class);
         $this->call(FunPromptSeeder::class);
         $this->call(FavoriteInvestingMarketsSeeder::class,);
+        $this->call(MasterDataSeeder::class);
     }
 }

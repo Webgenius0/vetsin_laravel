@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\NotificationSettingsController;
 use App\Http\Controllers\Api\UserOptionsController;
 
+use App\Http\Controllers\Api\DynamicInputController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -159,3 +160,8 @@ Route::group(['middleware' => ['jwt.verify']], function () {
         Route::post('/toggle', 'toggleNotifications');
     });
 });
+
+Route::get('/age-preferences', [DynamicInputController::class, 'age_preferences']);
+Route::get('/prefered-property-types', [DynamicInputController::class, 'prefered_property_types']);
+Route::get('/choose-your-identities', [DynamicInputController::class, 'choose_your_identities']);
+Route::get('/budgets', [DynamicInputController::class, 'budgets']);
