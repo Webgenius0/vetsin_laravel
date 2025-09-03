@@ -10,6 +10,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -168,5 +170,17 @@ class User extends Authenticatable implements JWTSubject
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(HashTag::class, 'user_hash_tags', 'user_id', 'hash_tag_id');
+    }
+
+    /**
+     * Accessor & Mutator so API reads/writes date_of_birth as MM/DD/YYYY,
+     * while DB remains DATE (Y-m-d).
+     */
+    protected function dateOfBirth(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value ? Carbon::parse($value)->format('m/d/Y') : null,
+            set: fn($value) => $value ? Carbon::createFromFormat('m/d/Y', $value)->format('Y-m-d') : null
+        );
     }
 }
