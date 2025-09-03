@@ -128,8 +128,14 @@
                     </div>
                 </div>
 
-                <div data-kt-menu-trigger="click"
-                    class="menu-item {{ request()->routeIs(['age_preference.*','prefered_property_type.*','choose_your_identity.*','budget.*']) ? 'active show' : '' }} menu-accordion">
+                <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->routeIs([
+    'age_preference.*',
+    'prefered_property_type.*',
+    'choose_your_identity.*',
+    'budget.*',
+    'admin.ideal_connection.*',
+    'admin.willing_to_relocate.*'
+]) ? 'active show' : '' }}">
                     <span class="menu-link">
                         <span class="menu-icon">
                             <i class="fa-solid fa-sliders fs-2"></i>
@@ -138,6 +144,24 @@
                         <span class="menu-arrow"></span>
                     </span>
                     <div class="menu-sub menu-sub-accordion">
+
+                        <!-- Ideal Connection -->
+                        <div class="menu-item">
+                            <a href="{{ route('admin.ideal_connection.index') }}"
+                                class="menu-link {{ request()->routeIs(['admin.ideal_connection.index', 'admin.ideal_connection.create', 'admin.ideal_connection.edit']) ? 'active' : '' }}">
+                                <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                <span class="menu-title">Ideal Connection</span>
+                            </a>
+                        </div>
+
+                        <!-- Willing to Relocate -->
+                        <div class="menu-item">
+                            <a href="{{ route('admin.willing_to_relocate.index') }}"
+                                class="menu-link {{ request()->routeIs(['admin.willing_to_relocate.index', 'admin.willing_to_relocate.create', 'admin.willing_to_relocate.edit']) ? 'active' : '' }}">
+                                <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                <span class="menu-title">Willing to Relocate</span>
+                            </a>
+                        </div>
                         <div class="menu-item">
                             <a href="{{ route('age_preference.index') }}"
                                 class="menu-link {{ request()->routeIs(['age_preference.index', 'age_preference.create', 'age_preference.edit']) ? 'active show' : '' }}">

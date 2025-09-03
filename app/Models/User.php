@@ -163,6 +163,16 @@ class User extends Authenticatable implements JWTSubject
     }
 
 
+    public function idealConnectionRel()
+    {
+        return $this->belongsTo(IdealConnection::class, 'ideal_connection');
+    }
+
+    public function willingToRelocateRel()
+    {
+        return $this->belongsTo(WillingToRelocate::class, 'willing_to_relocate');
+    }
+
     /**
      * Accessor & Mutator so API reads/writes date_of_birth as MM/DD/YYYY,
      * while DB remains DATE (Y-m-d).

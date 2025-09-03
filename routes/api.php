@@ -46,7 +46,8 @@ Route::controller(RegisterController::class)->prefix('users/register')->group(fu
 });
 
 // User Options
-Route::get('/users/options', [UserOptionsController::class, 'index']);
+Route::get('/users/ideal-connections', [UserOptionsController::class, 'idealConnections']);
+Route::get('/users/willing-to-relocate', [UserOptionsController::class, 'willingToRelocate']);
 
 //Login API
 Route::controller(LoginController::class)->prefix('users/login')->group(function () {

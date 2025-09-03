@@ -3,35 +3,35 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProfileOption;
+use App\Models\IdealConnection;
+use App\Models\WillingToRelocate;
 use App\Traits\ApiResponse;
 
 class UserOptionsController extends Controller
 {
-
     use ApiResponse;
-    /**
-     * GET /api/users/options
-     * Returns grouped options used by the mobile app (labels + info tooltip text)
-     */
-    public function index()
-    {
-        // groups we want to return
-        $groups = ['willing_to_relocate', 'ideal_connection', 'age_preferences'];
 
-        $options = ProfileOption::whereIn('group', $groups)
-            ->orderBy('group')
-            ->orderBy('sort_order')
+    /**
+     * GET /api/users/ideal-connections
+     */
+    public function idealConnections()
+    {
+        $options = IdealConnection::where('status', 'active')
+            ->orderBy('id')
             ->get();
 
-        $grouped = [];
-        foreach ($options as $opt) {
-            $grouped[$opt->group][] = [
-                // 'key'   => $opt->key,
-                'label' => $opt->label,
-                'info'  => $opt->info,
-            ];
-        }
-        return $this->success($grouped, 'User options fetched successfully', 200);
+        return $this->success($options, 'Ideal connections fetched successfully', 200);
+    }
+
+    /**
+     * GET /api/users/willing-to-relocate
+     */
+    public function willingToRelocate()
+    {
+        $options = WillingToRelocate::where('status', 'active')
+            ->orderBy('id')
+            ->get();
+
+        return $this->success($options, 'Willing to relocate options fetched successfully', 200);
     }
 }
