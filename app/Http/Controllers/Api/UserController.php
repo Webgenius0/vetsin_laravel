@@ -22,17 +22,26 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse  JSON response with success or error.
      */
 
+   
     public function userData()
     {
-
         $user = auth()->user();
 
         if (!$user) {
             return $this->error([], 'User Not Found', 404);
         }
 
-        // Add computed attributes to the response
+        // Load relations
+        // $user->load(['idealConnectionRel', 'willingToRelocateRel']);
+
+        // Convert to array
         $userData = $user->toArray();
+
+        // Rename for clarity
+        $userData['ideal_connection']    = $user->idealConnectionRel ? $user->idealConnectionRel->only(['title', 'info']) : null;
+        $userData['willing_to_relocate'] = $user->willingToRelocateRel ? $user->willingToRelocateRel->only(['title']) : null;
+
+        // Add computed attributes
         $userData['age'] = $user->age;
         $userData['is_profile_complete'] = $user->is_profile_complete;
         $userData['is_real_estate_complete'] = $user->is_real_estate_complete;
@@ -47,14 +56,112 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse  JSON response with success or error.
      */
 
+    // public function userUpdate(Request $request)
+    // {
+
+    //     // fetch allowed keys from DB
+    //     $idealValues = ProfileOption::where('group', 'ideal_connection')->pluck('label')->toArray();
+    //     $relocateValues = ProfileOption::where('group', 'willing_to_relocate')->pluck('label')->toArray();
+
+
+    //     $validator = Validator::make($request->all(), [
+    //         'avatar'  => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5120',
+    //         'name'    => 'required|string|max:255',
+
+    //         // accept MM/DD/YYYY input
+    //         'date_of_birth' => 'nullable|date_format:m/d/Y|before:today',
+
+    //         'location' => 'nullable|string|max:255',
+
+    //         // backward compat: relationship_goal (old) - keep allowed list
+    //         'relationship_goal' => 'nullable|in:casual,serious,friendship,marriage',
+
+    //         'ideal_connection'    => ['nullable', Rule::in($idealValues)],
+    //         'willing_to_relocate' => ['nullable', Rule::in($relocateValues)],
+
+    //         'preferred_age_min' => 'nullable|integer|min:18|max:120',
+    //         'preferred_age_max' => 'nullable|integer|min:18|max:120',
+
+    //         'preferred_property_type' => 'nullable|in:apartment,house,condo,townhouse,studio,any',
+    //         'identity' => 'nullable|in:buyer,seller,renter,investor',
+    //         'budget_min' => 'nullable|numeric|min:0',
+    //         'budget_max' => 'nullable|numeric|min:0',
+    //         'preferred_location' => 'nullable|string|max:255',
+    //         'perfect_weekend' => 'nullable|string|max:1000',
+    //         'cant_live_without' => 'nullable|string|max:1000',
+    //         'quirky_fact' => 'nullable|string|max:1000',
+    //         'about_me' => 'nullable|string|max:2000',
+    //         'tags' => 'nullable|array',
+    //         'tags.*' => 'string|max:50',
+    //     ]);
+
+
+    //     if ($validator->fails()) {
+    //         return $this->error($validator->errors(), "Validation Error", 422);
+    //     }
+
+    //     try {
+    //         // Find the user by ID
+    //         $user = auth()->user();
+
+    //         // If user is not found, return an error response
+    //         if (!$user) {
+    //             return $this->error([], "User Not Found", 404);
+    //         }
+
+    //         if ($request->hasFile('avatar')) {
+    //             if ($user->avatar) {
+    //                 $previousImagePath = public_path($user->avatar);
+    //                 if (file_exists($previousImagePath)) {
+    //                     unlink($previousImagePath);
+    //                 }
+    //             }
+    //             $image     = $request->file('avatar');
+    //             $imageName = uploadImage($image, 'User/Avatar');
+    //         } else {
+    //             $imageName = $user->avatar;
+    //         }
+
+    //         $user->name    = $request->name;
+    //         $user->avatar  = $imageName;
+
+    //         // Update dating profile fields if present
+    //         $fields = [
+    //             'date_of_birth',
+    //             'location',
+    //             'relationship_goal',   // legacy (kept)
+    //             'ideal_connection',    // new
+    //             'willing_to_relocate', // new
+    //             'preferred_age_min',
+    //             'preferred_age_max',
+    //             'preferred_property_type',
+    //             'identity',
+    //             'budget_min',
+    //             'budget_max',
+    //             'preferred_location',
+    //             'perfect_weekend',
+    //             'cant_live_without',
+    //             'quirky_fact',
+    //             'about_me',
+    //             'tags',
+    //         ];
+
+    //         foreach ($fields as $field) {
+    //             if ($request->has($field)) {
+    //                 $user->$field = $request->input($field);
+    //             }
+    //         }
+
+    //         $user->save();
+
+    //         return $this->success($user, 'User updated successfully', 200);
+    //     } catch (\Exception $e) {
+    //         return $this->error([], $e->getMessage(), 500);
+    //     }
+    // }
+
     public function userUpdate(Request $request)
     {
-
-        // fetch allowed keys from DB
-        $idealValues = ProfileOption::where('group', 'ideal_connection')->pluck('label')->toArray();
-        $relocateValues = ProfileOption::where('group', 'willing_to_relocate')->pluck('label')->toArray();
-     
-
         $validator = Validator::make($request->all(), [
             'avatar'  => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5120',
             'name'    => 'required|string|max:255',
@@ -64,11 +171,11 @@ class UserController extends Controller
 
             'location' => 'nullable|string|max:255',
 
-            // backward compat: relationship_goal (old) - keep allowed list
             'relationship_goal' => 'nullable|in:casual,serious,friendship,marriage',
 
-            'ideal_connection'    => ['nullable', Rule::in($idealValues)],
-            'willing_to_relocate' => ['nullable', Rule::in($relocateValues)],
+            // new foreign key fields
+            'ideal_connection'    => 'nullable|integer|exists:ideal_connections,id',
+            'willing_to_relocate' => 'nullable|integer|exists:willing_to_relocates,id',
 
             'preferred_age_min' => 'nullable|integer|min:18|max:120',
             'preferred_age_max' => 'nullable|integer|min:18|max:120',
@@ -86,43 +193,37 @@ class UserController extends Controller
             'tags.*' => 'string|max:50',
         ]);
 
-
         if ($validator->fails()) {
             return $this->error($validator->errors(), "Validation Error", 422);
         }
 
         try {
-            // Find the user by ID
+            // Find the authenticated user
             $user = auth()->user();
-
-            // If user is not found, return an error response
             if (!$user) {
                 return $this->error([], "User Not Found", 404);
             }
 
+            // Handle avatar upload
             if ($request->hasFile('avatar')) {
-                if ($user->avatar) {
-                    $previousImagePath = public_path($user->avatar);
-                    if (file_exists($previousImagePath)) {
-                        unlink($previousImagePath);
-                    }
+                if ($user->avatar && file_exists(public_path($user->avatar))) {
+                    unlink(public_path($user->avatar));
                 }
-                $image     = $request->file('avatar');
-                $imageName = uploadImage($image, 'User/Avatar');
+                $imageName = uploadImage($request->file('avatar'), 'User/Avatar');
             } else {
                 $imageName = $user->avatar;
             }
 
-            $user->name    = $request->name;
-            $user->avatar  = $imageName;
+            $user->name   = $request->name;
+            $user->avatar = $imageName;
 
-            // Update dating profile fields if present
+            // Fields to update
             $fields = [
                 'date_of_birth',
                 'location',
-                'relationship_goal',   // legacy (kept)
-                'ideal_connection',    // new
-                'willing_to_relocate', // new
+                'relationship_goal',
+                'ideal_connection',
+                'willing_to_relocate',
                 'preferred_age_min',
                 'preferred_age_max',
                 'preferred_property_type',
@@ -150,6 +251,7 @@ class UserController extends Controller
             return $this->error([], $e->getMessage(), 500);
         }
     }
+
 
     /**
      * Change Login User Password

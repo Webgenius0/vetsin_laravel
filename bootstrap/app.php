@@ -10,9 +10,9 @@ use Shetabit\Visitor\Middlewares\LogVisits;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
-        channels: __DIR__.'/../routes/channels.php',
+        web: __DIR__ . '/../routes/web.php',
+        commands: __DIR__ . '/../routes/console.php',
+        channels: __DIR__ . '/../routes/channels.php',
         health: '/up',
         then: function () {
             Route::middleware('api')
@@ -34,6 +34,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->prefix('admin')
                 ->group(base_path('routes/fahim.php'));
 
+            Route::middleware(['web', 'auth', 'admin', 'LogVisits'])
+                ->prefix('admin')
+                ->group(base_path('routes/rahat.php'));
+
             Route::middleware(['web'])
                 ->group(base_path('routes/frontend.php'));
         }
@@ -45,7 +49,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'LogVisits' => LogVisits::class,
         ]);
     })
-    ->withBroadcasting(    __DIR__.'/../routes/channels.php',    ['prefix' => 'api', 'middleware' => ['jwt.verify']],)
+    ->withBroadcasting(__DIR__ . '/../routes/channels.php',    ['prefix' => 'api', 'middleware' => ['jwt.verify']],)
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

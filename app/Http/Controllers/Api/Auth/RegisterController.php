@@ -53,12 +53,101 @@ class RegisterController extends Controller
      * @return \Illuminate\Http\JsonResponse  JSON response with success or error.
      */
 
+    // public function userRegister(Request $request)
+    // {
+    //     // fetch allowed keys from DB
+    //     $idealValues = ProfileOption::where('group', 'ideal_connection')->pluck('label')->toArray();
+    //     $relocateValues = ProfileOption::where('group', 'willing_to_relocate')->pluck('label')->toArray();
+
+    //     $validator = Validator::make($request->all(), [
+    //         'name'           => 'required|string|max:255',
+    //         'email'          => 'required|email|unique:users,email',
+    //         'avatar'         => 'nullable|image|mimes:jpeg,png,jpg,svg|max:5120',
+    //         'password'       => ['required', 'string', 'min:8', 'confirmed'],
+    //         'agree_to_terms' => 'required|boolean',
+
+    //         // Dating app fields
+    //         'date_of_birth'       => 'nullable|date_format:m/d/Y|before:today', // MM/DD/YYYY
+    //         'location'            => 'nullable|string|max:255',
+    //         'relationship_goal'   => 'nullable|in:casual,serious,friendship,marriage',
+    //         'ideal_connection'    => ['nullable', Rule::in($idealValues)],
+    //         'willing_to_relocate' => ['nullable', Rule::in($relocateValues)],
+    //         'preferred_age_min'   => 'nullable|integer|min:18|max:120',
+    //         'preferred_age_max'   => 'nullable|integer|min:18|max:120',
+    //         'preferred_property_type' => 'nullable|in:apartment,house,condo,townhouse,studio,any',
+    //         'identity'            => 'nullable|in:buyer,seller,renter,investor',
+    //         'budget_min'          => 'nullable|numeric|min:0',
+    //         'budget_max'          => 'nullable|numeric|min:0',
+    //         'preferred_location'  => 'nullable|string|max:255',
+    //         'perfect_weekend'     => 'nullable|string|max:1000',
+    //         'cant_live_without'   => 'nullable|string|max:1000',
+    //         'quirky_fact'         => 'nullable|string|max:1000',
+    //         'about_me'            => 'nullable|string|max:2000',
+    //         'tags'                => 'nullable|array',
+    //         'tags.*'              => 'string|max:50',
+    //     ], [
+    //         'password.min' => 'The password must be at least 8 characters long.',
+    //         'preferred_age_max.gte' => 'The preferred age max must be greater than or equal to preferred age min.',
+    //         'budget_max.gte' => 'The budget max must be greater than or equal to budget min.',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return $this->error($validator->errors(), "Validation Error", 422);
+    //     }
+
+    //     try {
+    //         // upload avatar if exists
+    //         if ($request->hasFile('avatar')) {
+    //             $avatarPath = uploadImage($request->file('avatar'), 'User/Avatar');
+    //             $request->merge(['avatar' => $avatarPath]);
+    //         } else {
+    //             $request->merge(['avatar' => null]);
+    //         }
+
+    //         $user = new User();
+    //         $user->name = $request->input('name');
+    //         $user->email = $request->input('email');
+    //         $user->avatar = $request->input('avatar');
+    //         $user->password = Hash::make($request->input('password'));
+    //         $user->agree_to_terms = $request->input('agree_to_terms');
+
+    //         // Dating app fields
+    //         $user->date_of_birth = $request->input('date_of_birth');
+    //         $user->location = $request->input('location');
+    //         $user->relationship_goal = $request->input('relationship_goal');
+    //         $user->ideal_connection = $request->input('ideal_connection');
+    //         $user->willing_to_relocate = $request->input('willing_to_relocate');
+    //         $user->preferred_age_min = $request->input('preferred_age_min');
+    //         $user->preferred_age_max = $request->input('preferred_age_max');
+    //         $user->preferred_property_type = $request->input('preferred_property_type');
+    //         $user->identity = $request->input('identity');
+    //         $user->budget_min = $request->input('budget_min');
+    //         $user->budget_max = $request->input('budget_max');
+    //         $user->preferred_location = $request->input('preferred_location');
+    //         $user->perfect_weekend = $request->input('perfect_weekend');
+    //         $user->cant_live_without = $request->input('cant_live_without');
+    //         $user->quirky_fact = $request->input('quirky_fact');
+    //         $user->about_me = $request->input('about_me');
+    //         $user->tags = $request->input('tags', []);
+
+    //         $user->save();
+
+    //         $this->sendOtp($user);
+
+    //         if ($request->has('device_token')) {
+    //             $user->device_token = $request->input('device_token');
+    //             $user->save();
+    //             NotificationService::sendWelcomeNotification($user);
+    //         }
+
+    //         return $this->success($user, 'User registered successfully', 201);
+    //     } catch (\Exception $e) {
+    //         return $this->error([], $e->getMessage(), 500);
+    //     }
+    // }
     public function userRegister(Request $request)
     {
-        // fetch allowed keys from DB
-        $idealValues = ProfileOption::where('group', 'ideal_connection')->pluck('label')->toArray();
-        $relocateValues = ProfileOption::where('group', 'willing_to_relocate')->pluck('label')->toArray();
-
+      
         $validator = Validator::make($request->all(), [
             'name'           => 'required|string|max:255',
             'email'          => 'required|email|unique:users,email',
@@ -74,11 +163,11 @@ class RegisterController extends Controller
             'agree_to_terms' => 'required|boolean',
 
             // Dating app fields
-            'date_of_birth'       => 'nullable|date_format:m/d/Y|before:today', // MM/DD/YYYY
+            'date_of_birth'       => 'nullable|date_format:m/d/Y|before:today',
             'location'            => 'nullable|string|max:255',
             'relationship_goal'   => 'nullable|in:casual,serious,friendship,marriage',
-            'ideal_connection'    => ['nullable', Rule::in($idealValues)],
-            'willing_to_relocate' => ['nullable', Rule::in($relocateValues)],
+            'ideal_connection'    => 'nullable|integer|exists:ideal_connections,id',
+            'willing_to_relocate' => 'nullable|integer|exists:willing_to_relocates,id',
             'preferred_age_min'   => 'nullable|integer|min:18|max:120',
             'preferred_age_max'   => 'nullable|integer|min:18|max:120',
             'preferred_property_type' => 'nullable|in:apartment,house,condo,townhouse,studio,any',
@@ -106,17 +195,12 @@ class RegisterController extends Controller
         try {
 
             // upload avatar if exists
-            if ($request->hasFile('avatar')) {
-                $avatarPath = uploadImage($request->file('avatar'), 'User/Avatar');
-                $request->merge(['avatar' => $avatarPath]);
-            } else {
-                $request->merge(['avatar' => null]);
-            }
+            $avatarPath = $request->hasFile('avatar') ? uploadImage($request->file('avatar'), 'User/Avatar') : null;
 
             $user = new User();
             $user->name = $request->input('name');
             $user->email = $request->input('email');
-            $user->avatar = $request->input('avatar');
+            $user->avatar = $avatarPath;
             $user->password = Hash::make($request->input('password'));
             $user->agree_to_terms = $request->input('agree_to_terms');
 
@@ -124,8 +208,8 @@ class RegisterController extends Controller
             $user->date_of_birth = $request->input('date_of_birth');
             $user->location = $request->input('location');
             $user->relationship_goal = $request->input('relationship_goal');
-            $user->ideal_connection = $request->input('ideal_connection');
-            $user->willing_to_relocate = $request->input('willing_to_relocate');
+            $user->ideal_connection = $request->input('ideal_connection'); // now ID
+            $user->willing_to_relocate = $request->input('willing_to_relocate'); // now ID
             $user->preferred_age_min = $request->input('preferred_age_min');
             $user->preferred_age_max = $request->input('preferred_age_max');
             $user->preferred_property_type = $request->input('preferred_property_type');

@@ -33,16 +33,7 @@ class ProfileOptionsSeeder extends Seeder
             ['group' => 'ideal_connection', 'key' => 'international_connections', 'label' => 'International Connections', 'info' => 'Open to global love and investment adventures.', 'sort_order' => 7, 'created_at' => $now, 'updated_at' => $now],
             ['group' => 'ideal_connection', 'key' => 'conscious_coupling_fahim', 'label' => 'Conscious Coupling', 'info' => 'Seeking a mindful connection rooted in purpose and depth.', 'sort_order' => 8, 'created_at' => $now, 'updated_at' => $now],
         ]);
-
-        // Age preference brackets (include 65+)
-        $rows = array_merge($rows, [
-            ['group' => 'age_preferences', 'key' => '18_24',   'label' => '18–24', 'info' => null, 'sort_order' => 1, 'created_at' => $now, 'updated_at' => $now],
-            ['group' => 'age_preferences', 'key' => '25_34',   'label' => '25–34', 'info' => null, 'sort_order' => 2, 'created_at' => $now, 'updated_at' => $now],
-            ['group' => 'age_preferences', 'key' => '35_44',   'label' => '35–44', 'info' => null, 'sort_order' => 3, 'created_at' => $now, 'updated_at' => $now],
-            ['group' => 'age_preferences', 'key' => '45_54',   'label' => '45–54', 'info' => null, 'sort_order' => 4, 'created_at' => $now, 'updated_at' => $now],
-            ['group' => 'age_preferences', 'key' => '55_64',   'label' => '55–64', 'info' => null, 'sort_order' => 5, 'created_at' => $now, 'updated_at' => $now],
-            ['group' => 'age_preferences', 'key' => '65_plus', 'label' => '65+',   'info' => null, 'sort_order' => 6, 'created_at' => $now, 'updated_at' => $now],
-        ]);
+        
 
         DB::table('profile_options')->insert($rows);
     }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\WillingToRelocate;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,5 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FaqSeeder::class);
         $this->call(HashTagSeeder::class);
         $this->call(ProfileOptionsSeeder::class);
+        $this->call(WillingToRelocateSeeder::class);
+        $this->call(IdealConnectionSeeder::class);
     }
 }
