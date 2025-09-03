@@ -19,5 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(DynamicPageSeeder::class);
         $this->call(FaqSeeder::class);
         $this->call(ProfileOptionsSeeder::class);
+        $this->call(FunPromptSeeder::class);
+        $this->call(FavoriteInvestingMarketsSeeder::class,);
     }
 }

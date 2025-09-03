@@ -129,7 +129,7 @@
                 </div>
 
                 <div data-kt-menu-trigger="click"
-                    class="menu-item {{ request()->routeIs(['age_preference.*','prefered_property_type.*','choose_your_identity.*','budget.*']) ? 'active show' : '' }} menu-accordion">
+                    class="menu-item {{ request()->routeIs(['age_preference.*', 'prefered_property_type.*', 'choose_your_identity.*', 'budget.*']) ? 'active show' : '' }} menu-accordion">
                     <span class="menu-link">
                         <span class="menu-icon">
                             <i class="fa-solid fa-sliders fs-2"></i>
@@ -176,6 +176,59 @@
                         </div>
                     </div>
                 </div>
+                <div data-kt-menu-trigger="click"
+                    class="menu-item {{ request()->routeIs(['fun-prompt1s.*', 'fun-prompt2s.*', 'fun-prompt3s.*']) ? 'active show' : '' }} menu-accordion">
+                    <div data-kt-menu-trigger="click"
+                        class="menu-item {{ request()->routeIs('fun-prompts.*') ? 'active show' : '' }} menu-accordion">
+                        <span class="menu-link">
+                            <span class="menu-icon"><i class="fa-solid fa-face-grin-stars fs-2"></i></span>
+                            <span class="menu-title">Fun Prompts</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                        <div class="menu-sub menu-sub-accordion">
+                            <div class="menu-item">
+                                <a href="{{ route('fun-prompts.index', 'fun1') }}"
+                                    class="menu-link {{ request()->is('fun-prompts/fun1*') ? 'active show' : '' }}">
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">Fun Prompt 1</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ route('fun-prompts.index', 'fun2') }}"
+                                    class="menu-link {{ request()->is('fun-prompts/fun2*') ? 'active show' : '' }}">
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">Fun Prompt 2</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="{{ route('fun-prompts.index', 'fun3') }}"
+                                    class="menu-link {{ request()->is('fun-prompts/fun3*') ? 'active show' : '' }}">
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">Fun Prompt 3</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div data-kt-menu-trigger="click"
+                    class="menu-item {{ request()->routeIs('favorite-investing-markets.*') ? 'active show' : '' }} menu-accordion">
+                    <span class="menu-link">
+                        <span class="menu-icon"><i class="fa-solid fa-chart-line fs-2"></i></span>
+                        <span class="menu-title">Favorite Investing Markets</span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                    <div class="menu-sub menu-sub-accordion">
+                        <div class="menu-item">
+                            <a href="{{ route('favorite-investing-markets.index') }}"
+                                class="menu-link {{ request()->is('favorite-investing-markets*') ? 'active show' : '' }}">
+                                <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                <span class="menu-title">Manage Markets</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
 
 
             </div>

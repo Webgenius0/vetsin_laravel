@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\SitesettingController;
 use App\Http\Controllers\Api\SocialLinkController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\FavoriteController;
+use App\Http\Controllers\Api\FavoriteInvestingMarketApi;
+use App\Http\Controllers\Api\FunPromptApiController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PropertyListingController;
 use App\Http\Controllers\Api\NotificationController;
@@ -85,6 +87,13 @@ Route::controller(SocialLinkController::class)->group(function () {
 //FAQ APIs
 Route::controller(FaqController::class)->group(function () {
     Route::get('/faq/all', 'FaqAll');
+});
+Route::controller(FavoriteInvestingMarketApi::class)->group(function () {
+    Route::get('/favorite-investing-market/all', 'all');
+});
+
+Route::prefix('fun-prompts/{type}')->group(function () {
+    Route::get('/all', [FunPromptApiController::class, 'all']);
 });
 
 
