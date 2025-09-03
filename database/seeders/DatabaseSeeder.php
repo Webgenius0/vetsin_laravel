@@ -19,9 +19,9 @@ class DatabaseSeeder extends Seeder
         $this->call(SystemSettingSeeder::class);
         $this->call(DynamicPageSeeder::class);
         $this->call(FaqSeeder::class);
-        $this->call(HashTagSeeder::class);
-        $this->call(ProfileOptionsSeeder::class);
         $this->call(WillingToRelocateSeeder::class);
         $this->call(IdealConnectionSeeder::class);
+        $this->call(ProfileOptionsSeeder::class);
+        $this->call(HashTagSeeder::class);
     }
 }
