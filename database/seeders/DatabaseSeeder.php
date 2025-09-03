@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(DynamicPageSeeder::class);
         $this->call(FaqSeeder::class);
         $this->call(MasterDataSeeder::class);
+        $this->call(ProfileOptionsSeeder::class);
     }
 }

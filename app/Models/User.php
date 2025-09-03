@@ -10,6 +10,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -17,7 +19,7 @@ class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, Chatable;
 
-      /**
+    /**
      * Get the identifier that will be stored in the JWT subject claim.
      *
      * @return mixed
@@ -62,7 +64,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
 
-    protected function casts(): array {
+    protected function casts(): array
+    {
         return [
             'email_verified_at' => 'datetime',
             'agree_to_terms' => 'boolean',
@@ -96,10 +99,10 @@ class User extends Authenticatable implements JWTSubject
     public function getIsProfileCompleteAttribute()
     {
         return !empty($this->date_of_birth) &&
-               !empty($this->location) &&
-               !empty($this->relationship_goal) &&
-               !empty($this->preferred_age_min) &&
-               !empty($this->preferred_age_max);
+            !empty($this->location) &&
+            !empty($this->relationship_goal) &&
+            !empty($this->preferred_age_min) &&
+            !empty($this->preferred_age_max);
     }
 
     /**
@@ -108,10 +111,10 @@ class User extends Authenticatable implements JWTSubject
     public function getIsRealEstateCompleteAttribute()
     {
         return !empty($this->preferred_property_type) &&
-               !empty($this->identity) &&
-               !empty($this->budget_min) &&
-               !empty($this->budget_max) &&
-               !empty($this->preferred_location);
+            !empty($this->identity) &&
+            !empty($this->budget_min) &&
+            !empty($this->budget_max) &&
+            !empty($this->preferred_location);
     }
 
     /**
@@ -157,5 +160,18 @@ class User extends Authenticatable implements JWTSubject
     public function routeNotificationForFcm()
     {
         return $this->device_token;
+    }
+
+
+    /**
+     * Accessor & Mutator so API reads/writes date_of_birth as MM/DD/YYYY,
+     * while DB remains DATE (Y-m-d).
+     */
+    protected function dateOfBirth(): Attribute
+    {
+        return Attribute::make(
+            get: fn($value) => $value ? Carbon::parse($value)->format('m/d/Y') : null,
+            set: fn($value) => $value ? Carbon::createFromFormat('m/d/Y', $value)->format('Y-m-d') : null
+        );
     }
 }
