@@ -23,5 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(IdealConnectionSeeder::class);
         $this->call(ProfileOptionsSeeder::class);
         $this->call(HashTagSeeder::class);
+        $this->call(FunPromptSeeder::class);
+        $this->call(FavoriteInvestingMarketsSeeder::class,);
     }
 }
