@@ -18,8 +18,8 @@ use App\Http\Controllers\Api\PropertyListingController;
 use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\NotificationSettingsController;
 use App\Http\Controllers\Api\UserOptionsController;
-
 use App\Http\Controllers\Api\DynamicInputController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
