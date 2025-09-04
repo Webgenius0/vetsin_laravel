@@ -13,9 +13,11 @@ class FunPromptSeeder extends Seeder
      */
     public function run(): void
     {
+        // Clear the table first
+        \App\Models\FunPrompt::truncate();
+
         $prompts = [
             // Prompt 1
-            ['title' => 'My perfect weekend looks like:', 'status' => 'active', 'type' => 'fun1'],
             ['title' => 'Touring properties or open houses', 'status' => 'active', 'type' => 'fun1'],
             ['title' => 'A cozy morning with coffee and a spreadsheet', 'status' => 'active', 'type' => 'fun1'],
             ['title' => 'Exploring a new city', 'status' => 'active', 'type' => 'fun1'],
@@ -24,7 +26,6 @@ class FunPromptSeeder extends Seeder
             ['title' => 'Off-grid and unplugged', 'status' => 'active', 'type' => 'fun1'],
 
             // Prompt 2
-            ['title' => 'One thing I always look for in a home:', 'status' => 'active', 'type' => 'fun2'],
             ['title' => 'A sun-drenched workspace', 'status' => 'active', 'type' => 'fun2'],
             ['title' => 'Peace and privacy', 'status' => 'active', 'type' => 'fun2'],
             ['title' => 'Room to grow or host', 'status' => 'active', 'type' => 'fun2'],
@@ -33,7 +34,6 @@ class FunPromptSeeder extends Seeder
             ['title' => 'A unique design feature', 'status' => 'active', 'type' => 'fun2'],
 
             // Prompt 3
-            ['title' => 'A fun fact about me:', 'status' => 'active', 'type' => 'fun3'],
             ['title' => 'I research cities for fun', 'status' => 'active', 'type' => 'fun3'],
             ['title' => 'I can walk a property and imagine its ROI', 'status' => 'active', 'type' => 'fun3'],
             ['title' => 'I travel light but dream big', 'status' => 'active', 'type' => 'fun3'],
@@ -42,6 +42,6 @@ class FunPromptSeeder extends Seeder
             ['title' => 'I track Zillow for sport', 'status' => 'active', 'type' => 'fun3'],
         ];
 
-        FunPrompt::insert($prompts);
+        \App\Models\FunPrompt::insert($prompts);
     }
 }

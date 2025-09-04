@@ -8,7 +8,8 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void {
+    public function up(): void
+    {
         Schema::create('social_media', function (Blueprint $table) {
             $table->id();
             $table->string('social_media')->nullable();
@@ -17,11 +18,11 @@ return new class extends Migration {
             $table->softDeletes();
         });
     }
-
     /**
      * Reverse the migrations.
      */
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('social_media');
     }
 };
