@@ -11,4 +11,15 @@ class FunPrompt extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'status'
+    ];
+
+    protected $casts = [
+        'id' => 'integer',
+    ];
 }

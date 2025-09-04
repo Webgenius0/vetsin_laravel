@@ -4,6 +4,7 @@ use App\Http\Controllers\Web\Backend\DashboardController;
 use App\Http\Controllers\Web\Backend\FaqController;
 use App\Http\Controllers\Web\Backend\FavoriteInvestingMarketController;
 use App\Http\Controllers\Web\Backend\FunPromptController;
+use App\Http\Controllers\Web\Backend\HashTagsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
@@ -38,4 +39,14 @@ Route::controller(FavoriteInvestingMarketController::class)->group(function () {
     Route::post('/favorite-investing-markets/update/{id}', 'update')->name('favorite-investing-markets.update');
     Route::post('/favorite-investing-markets/status/{id}', 'status')->name('favorite-investing-markets.status');
     Route::post('/favorite-investing-markets/destroy/{id}', 'destroy')->name('favorite-investing-markets.destroy');
+});
+
+Route::controller(HashTagsController::class)->group(function () {
+    Route::get('/hash-tags', 'index')->name('hash-tags.index');
+    Route::get('/hash-tags/create', 'create')->name('hash-tags.create');
+    Route::post('/hash-tags/store', 'store')->name('hash-tags.store');
+    Route::get('/hash-tags/edit/{id}', 'edit')->name('hash-tags.edit');
+    Route::post('/hash-tags/update/{id}', 'update')->name('hash-tags.update');
+    Route::post('/hash-tags/status/{id}', 'status')->name('hash-tags.status');
+    Route::post('/hash-tags/destroy/{id}', 'destroy')->name('hash-tags.destroy');
 });

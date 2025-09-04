@@ -7,4 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class FavoriteInvestingMarket extends Model
 {
     protected $guarded = ['id'];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'status'
+    ];
+
+    protected $casts = [
+        'id' => 'integer',
+    ];
 }
