@@ -43,6 +43,7 @@ php artisan optimize:clear
 ```sh
 php artisan serve
 ```
+
 For Admin Login `http://127.0.0.1:8000/admin` <br>
 Admin gmail = `admin@admin.com` & password = `12345678`
 
